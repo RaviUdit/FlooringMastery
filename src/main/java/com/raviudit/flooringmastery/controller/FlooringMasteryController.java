@@ -91,6 +91,19 @@ public class FlooringMasteryController {
     
     private void addOrder(){
         
+        String[] date = new String[3];
+        
+        date[0] = view.getYear();
+        date[1] = view.getMonth();
+        date[2] = view.getDay();
+        
+        String[] orderInfo = new String[4];
+        
+        orderInfo[0] = view.getCustomerName();
+        orderInfo[1] = view.getState();
+        orderInfo[2] = view.getProductType();
+        orderInfo[3] = view.getArea();
+        
     }
     
     private void editOrder(){

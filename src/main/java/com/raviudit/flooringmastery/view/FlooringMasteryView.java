@@ -87,7 +87,7 @@ public class FlooringMasteryView {
         return io.readString("Please enter the State the order will be fufilled in.");
     }
     
-    public String getProductTYpe(){
+    public String getProductType(){
         return io.readString("Please enter the product you would like to purchase.");
     }
     
