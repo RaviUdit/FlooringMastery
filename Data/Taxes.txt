@@ -1,0 +1,4 @@
+AL:&:Alabama:&:2.5
+HI:&:Hawaii:&:5.5
+NY:&:New York:&:5.0
+TX:&:Texas:&:4.5
