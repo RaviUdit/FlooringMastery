@@ -21,13 +21,13 @@ public interface FlooringMasteryDAO {
     
     Product getProductByName(String productName) throws FlooringMasteryFilePersistanceException;
     
-    Order addOrder(String orderDate, Order order)  throws FlooringMasteryFilePersistanceException;
+    void addOrder(String orderDate, Order order)  throws FlooringMasteryFilePersistanceException;
     
-    Order getOrder(String orderDate);
+    Order getOrder(String orderDate, int orderNumber)throws FlooringMasteryFilePersistanceException;
     
     List<Order> getAllOrdersOnDate(String orderDate) throws FlooringMasteryFilePersistanceException;
     
-    Order removeOrder(String orderDate);
+    Order removeOrder(String orderDate, int orderNumber) throws FlooringMasteryFilePersistanceException;
     
     
 }

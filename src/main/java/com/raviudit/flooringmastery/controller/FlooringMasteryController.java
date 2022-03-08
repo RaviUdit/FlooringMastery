@@ -43,6 +43,7 @@ public class FlooringMasteryController {
                         break;
                     case 2:
                         
+                        addOrder();
                         break;
                     case 3:
                         
@@ -89,7 +90,7 @@ public class FlooringMasteryController {
         
     }
     
-    private void addOrder(){
+    private void addOrder() throws FlooringMasteryFilePersistanceException{
         
         String[] date = new String[3];
         
@@ -103,6 +104,8 @@ public class FlooringMasteryController {
         orderInfo[1] = view.getState();
         orderInfo[2] = view.getProductType();
         orderInfo[3] = view.getArea();
+        
+        service.addOrder(date[1], date[2], date[0], orderInfo[0], orderInfo[1], orderInfo[2], orderInfo[3]);
         
     }
     

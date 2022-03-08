@@ -77,6 +77,8 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         newOrder.setTax(orderTax);
         newOrder.setTotal(orderTotal);
         
+        dao.addOrder(orderString, newOrder);
+        
         return newOrder;
     }
 

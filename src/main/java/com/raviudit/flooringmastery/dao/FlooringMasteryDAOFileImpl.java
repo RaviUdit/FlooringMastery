@@ -57,31 +57,45 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
     }   
     
     @Override
-    public Order addOrder(String orderDate, Order order)  throws FlooringMasteryFilePersistanceException {
+    public void addOrder(String orderDate, Order order)  throws FlooringMasteryFilePersistanceException {
         
-      //  File f = new File(orderDate);
-      // if (f.exists()){
-      //     
-      // } else {
-            
-      // }
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       File f = new File(orderDate);
+       if (f.exists()){
+           loadOrdersFromFile(orderDate);
+           order.setOrderNumber(getAllOrdersOnDate(orderDate).size() + 1);
+           Order newOrder = orders.put(order.getOrderNumber(), order);
+           writeOrdersToFile(orderDate);
+           
+       } else {
+           writeOrderToNonexistingFile(orderDate, order);
+       }
+       
     }
 
     @Override
-    public Order getOrder(String orderDate) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Order getOrder(String orderDate, int orderNumber) throws FlooringMasteryFilePersistanceException{
+        
+        loadOrdersFromFile(orderDate);
+        return orders.get(orderNumber);
+       
     }
 
     @Override
     public List<Order> getAllOrdersOnDate(String orderDate) throws FlooringMasteryFilePersistanceException{
-      //  loadOrdersFromFile(orderDate);
+       
+        loadOrdersFromFile(orderDate);
         return new ArrayList(orders.values());
     }
 
     @Override
-    public Order removeOrder(String orderDate) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Order removeOrder(String orderDate, int orderNumber) throws FlooringMasteryFilePersistanceException{
+        
+        loadOrdersFromFile(orderDate);
+        Order removedOrder = orders.remove(orderNumber);
+        writeOrdersToFile(orderDate);
+        
+        return removedOrder;
+       
     }
     
 
