@@ -9,8 +9,12 @@ import com.raviudit.flooringmastery.model.Order;
 import com.raviudit.flooringmastery.model.Product;
 import com.raviudit.flooringmastery.model.Taxes;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +59,12 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
     @Override
     public Order addOrder(String orderDate, Order order)  throws FlooringMasteryFilePersistanceException {
         
-        
+      //  File f = new File(orderDate);
+      // if (f.exists()){
+      //     
+      // } else {
+            
+      // }
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -66,7 +75,7 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
 
     @Override
     public List<Order> getAllOrdersOnDate(String orderDate) throws FlooringMasteryFilePersistanceException{
-        loadOrdersFromFile(orderDate);
+      //  loadOrdersFromFile(orderDate);
         return new ArrayList(orders.values());
     }
 
@@ -185,8 +194,51 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         scanner.close();
     }
     
-    private void writeOrdersToFile(String month, String day, String year) throws FlooringMasteryFilePersistanceException{
+    private void writeOrdersToFile(String orderDate) throws FlooringMasteryFilePersistanceException{
         
+        PrintWriter out;
+        
+        try{
+            out = new PrintWriter(new FileWriter(orderDate));
+        }catch(IOException e){
+            throw new FlooringMasteryFilePersistanceException("Could not load File", e);
+        }
+        String headerString = "OrderNumber:&:CustomerName:&:State:&:TaxRate:&:ProductType:&:Area:&:CostPerSquareFoot:&:LaborCostPerSquareFoot:&:MaterialCost:&:LaborCost:&:Tax:&:Total";
+        out.println(headerString);
+        out.flush();
+        
+        String orderAsText;
+        
+        List<Order> orderList = this.getAllOrdersOnDate(orderDate);
+        for (Order currentOrder : orderList){
+            orderAsText = marshallOrder(currentOrder);
+            out.println(orderAsText);
+            out.flush();
+        }
+        
+        out.close();
+    }
+    
+    private void writeOrderToNonexistingFile(String orderDate, Order order) throws FlooringMasteryFilePersistanceException{
+        
+        PrintWriter out;
+        
+        try{
+            out = new PrintWriter(new FileWriter(orderDate));
+        }catch(IOException e){
+            throw new FlooringMasteryFilePersistanceException("Could not Create File", e);
+        }
+        String headerString = "OrderNumber:&:CustomerName:&:State:&:TaxRate:&:ProductType:&:Area:&:CostPerSquareFoot:&:LaborCostPerSquareFoot:&:MaterialCost:&:LaborCost:&:Tax:&:Total";
+        out.println(headerString);
+        out.flush();
+        
+        String orderAsText;
+        
+        orderAsText = marshallOrder(order);
+        out.println(orderAsText);
+        out.flush();
+        
+        out.close();
     }
     
     private Order unmarshallOrder(String orderAsText){
