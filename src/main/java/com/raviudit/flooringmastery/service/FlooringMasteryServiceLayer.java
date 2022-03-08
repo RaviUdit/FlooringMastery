@@ -21,7 +21,8 @@ public interface FlooringMasteryServiceLayer {
     
     Product getProductByName(String productName) throws FlooringMasteryFilePersistanceException;
     
-    Order addOrder(String orderDate, Order order);
+    Order addOrder(String month, String day, String year, String customerName, String stateName, String productType, String area)
+                                                 throws FlooringMasteryFilePersistanceException;
     
     Order getOrder(String orderDate);
     

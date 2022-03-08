@@ -53,7 +53,9 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
     }   
     
     @Override
-    public Order addOrder(String orderDate, Order order) {
+    public Order addOrder(String orderDate, Order order)  throws FlooringMasteryFilePersistanceException {
+        
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -63,8 +65,8 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
     }
 
     @Override
-    public List<Order> getAllOrdersOnDate(String month, String day, String year) throws FlooringMasteryFilePersistanceException{
-        loadOrdersFromFile( month, day, year);
+    public List<Order> getAllOrdersOnDate(String orderDate) throws FlooringMasteryFilePersistanceException{
+        loadOrdersFromFile(orderDate);
         return new ArrayList(orders.values());
     }
 
@@ -157,15 +159,18 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
 
 
     //Code to load and write orders to file
-    private void loadOrdersFromFile(String month, String day, String year) throws FlooringMasteryFilePersistanceException{
+    private void loadOrdersFromFile(String orderDate) throws FlooringMasteryFilePersistanceException{
         
         Scanner scanner;
         
         try{
-            scanner = new Scanner(new BufferedReader(new FileReader("Orders/Orders_" + month + day + year + ".txt")));
+            scanner = new Scanner(new BufferedReader(new FileReader(orderDate)));
         }catch (FileNotFoundException e) {
             throw new FlooringMasteryFilePersistanceException("File Does Not Exist", e);
         }
+        
+        String headerString;
+        headerString = scanner.nextLine();
         
         String currentLine;
         Order currentOrder;
