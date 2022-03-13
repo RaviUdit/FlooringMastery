@@ -39,7 +39,7 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
     @Override
     public List<Order> getAllOrdersOnDate(String month, String day, String year) throws FlooringMasteryFilePersistanceException {
         
-        String orderString = "Orders/Orders_" + month + day + year + ".txt";
+        String orderString = compileDate(month, day, year);
         
         return dao.getAllOrdersOnDate(orderString);
     }
@@ -48,7 +48,7 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
     public Order addOrder(String month, String day, String year,
                           String customerName, String stateName, String productType, String area) throws FlooringMasteryFilePersistanceException{
         
-        String orderString = "Orders/Orders_" + month + day + year + ".txt";
+        String orderString = compileDate(month, day, year);
         
         Taxes orderTaxes = getTaxesByState(stateName);
         Product orderProduct = getProductByName(productType);
@@ -74,24 +74,43 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         newOrder.setLaborCostPerSquareFoot(orderProduct.getLaborCostPerSquareFoot());
         newOrder.setMaterialCost(materialCost);
         newOrder.setLaborCost(laborCost);
-        newOrder.setTax(orderTax);
-        newOrder.setTotal(orderTotal);
+        newOrder.setTax(orderTax.setScale(2, RoundingMode.HALF_UP));
+        newOrder.setTotal(orderTotal.setScale(2, RoundingMode.HALF_UP));
         
         dao.addOrder(orderString, newOrder);
         
         return newOrder;
     }
-
+ 
     @Override
-    public Order getOrder(String orderDate) {
+    public Order editOrder(String month, String day, String year, String customerName, String stateName, String productType, String area) throws FlooringMasteryFilePersistanceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public Order getOrder(String month, String day, String year, int orderNumber)throws FlooringMasteryFilePersistanceException {
+        
+        String orderString = compileDate(month, day, year);       
+        return dao.getOrder(orderString, orderNumber);   
     }
 
     
 
     @Override
-    public Order removeOrder(String orderDate) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Order removeOrder(String month, String day, String year,  int orderNumber)throws FlooringMasteryFilePersistanceException{
+        
+        String orderString = compileDate(month, day, year);
+        
+        return dao.removeOrder(orderString, orderNumber);
+        
     }
     
+    private String compileDate(String month, String day, String year){
+        
+        String orderDate = "Orders/Orders_" + month + day + year + ".txt";
+        
+        return orderDate;
+    }
+
+
 }

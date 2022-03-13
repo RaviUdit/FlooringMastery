@@ -50,6 +50,7 @@ public class FlooringMasteryController {
                         break;
                     case 4:
                         
+                        removeOrder();
                         break;
                     case 5:
                         
@@ -85,7 +86,7 @@ public class FlooringMasteryController {
         date[1] = view.getMonth();
         date[2] = view.getDay();
         
-        List<Order> orderList = service.getAllOrdersOnDate(date[2], date[1], date[0]);
+        List<Order> orderList = service.getAllOrdersOnDate(date[1], date[2], date[0]);
         view.displayOrdersOnDate(orderList);
         
     }
@@ -109,11 +110,47 @@ public class FlooringMasteryController {
         
     }
     
-    private void editOrder(){
+    private void editOrder() throws FlooringMasteryFilePersistanceException{
         
     }
     
-    private void removeOrder(){
+    private void removeOrder() throws FlooringMasteryFilePersistanceException{
+        
+        String[] date = new String[3];
+        
+        date[0] = view.getYear();
+        date[1] = view.getMonth();
+        date[2] = view.getDay();
+        
+        int orderNumber = view.getOrderNumber();
+        
+        view.displayOrder(service.getOrder(date[1], date[2], date[0], orderNumber));
+        
+        String confirmDeletion = "n";
+        
+        boolean closeFunction = false;
+        
+        confirmDeletion = view.confirmationMessage("Would you like to delete this order? (Y/N)");
+        
+        while (closeFunction == false){
+            if(confirmDeletion.equalsIgnoreCase("y")){
+
+                service.removeOrder(date[1], date[2], date[0], orderNumber);
+                view.confirmationMessage("Order deleted.");
+                closeFunction = true;
+
+            } else if (confirmDeletion.equalsIgnoreCase("n")){
+
+                view.confirmationMessage("Order not deleted.");
+                closeFunction = true;
+            } else {
+
+                view.confirmationMessage("Unspecified option. Please choose Yes or No (Y/N)");
+                closeFunction = false;
+            }
+        }
+        
+        
         
     }
     

@@ -23,6 +23,8 @@ public interface FlooringMasteryDAO {
     
     void addOrder(String orderDate, Order order)  throws FlooringMasteryFilePersistanceException;
     
+    void editOrder(String orderDate, Order order)  throws FlooringMasteryFilePersistanceException;
+    
     Order getOrder(String orderDate, int orderNumber)throws FlooringMasteryFilePersistanceException;
     
     List<Order> getAllOrdersOnDate(String orderDate) throws FlooringMasteryFilePersistanceException;

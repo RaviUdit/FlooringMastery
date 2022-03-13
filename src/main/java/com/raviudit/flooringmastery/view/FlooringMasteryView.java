@@ -53,7 +53,7 @@ public class FlooringMasteryView {
         
         for (Order currentOrder: orderList){
             
-            String orderInfo = String.format("$%s : %s %s %s %s %s", 
+            String orderInfo = String.format("%s : %s, %s, %s, %s, $%s", 
                     String.valueOf(currentOrder.getOrderNumber()), 
                     currentOrder.getCustomerName(),
                     currentOrder.getState(),
@@ -66,6 +66,21 @@ public class FlooringMasteryView {
         
         io.readString("Hit Enter To Continue");
     }
+    
+    public void displayOrder(Order order){
+        
+        String orderInfo = String.format("%s : %s %s %s %s $%s", 
+            String.valueOf(order.getOrderNumber()), 
+            order.getCustomerName(),
+            order.getState(),
+            order.getProductType(),
+            order.getArea().toString(),
+            order.getTotal().toString());
+            
+        io.print(orderInfo);
+        
+        io.readString("Hit Enter To Continue");
+    }   
     
     public String getDay(){
         return io.readString("Please enter the Day of the requested order [DD].");
@@ -95,6 +110,13 @@ public class FlooringMasteryView {
         return io.readString("Please enter the area(feet squared) that you what to cover. Minimum order size is 100sq. feet.");
     }
     
+    public int getOrderNumber(){
+        return io.readInt("Please enter the Order Number of the order you wish to remove.");
+    }
+    
+    public String confirmationMessage(String message){
+        return io.readString(message);
+    }
     
     // BANNERS
     

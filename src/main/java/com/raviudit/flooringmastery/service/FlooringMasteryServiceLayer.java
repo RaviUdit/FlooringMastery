@@ -24,10 +24,13 @@ public interface FlooringMasteryServiceLayer {
     Order addOrder(String month, String day, String year, String customerName, String stateName, String productType, String area)
                                                  throws FlooringMasteryFilePersistanceException;
     
-    Order getOrder(String orderDate);
+    Order editOrder(String month, String day, String year, String customerName, String stateName, String productType, String area)
+                                                 throws FlooringMasteryFilePersistanceException;
+    
+    Order getOrder(String month, String day, String year, int orderNumber)throws FlooringMasteryFilePersistanceException;
     
     List<Order> getAllOrdersOnDate(String month, String day, String year) throws FlooringMasteryFilePersistanceException;
     
-    Order removeOrder(String orderDate);
+    Order removeOrder(String month, String day, String year, int orderNumber)throws FlooringMasteryFilePersistanceException;
     
 }

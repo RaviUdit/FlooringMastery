@@ -62,7 +62,10 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
        File f = new File(orderDate);
        if (f.exists()){
            loadOrdersFromFile(orderDate);
-           order.setOrderNumber(getAllOrdersOnDate(orderDate).size() + 1);
+           
+           Order lastOrder = getAllOrdersOnDate(orderDate).get(getAllOrdersOnDate(orderDate).size()-1);
+           
+           order.setOrderNumber(lastOrder.getOrderNumber() + 1);
            Order newOrder = orders.put(order.getOrderNumber(), order);
            writeOrdersToFile(orderDate);
            
@@ -70,6 +73,16 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
            writeOrderToNonexistingFile(orderDate, order);
        }
        
+    }
+    
+    
+    @Override
+    public void editOrder(String orderDate, Order order) throws FlooringMasteryFilePersistanceException {
+        
+        loadOrdersFromFile(orderDate);
+        orders.put(order.getOrderNumber(), order);
+        writeOrdersToFile(orderDate);
+        
     }
 
     @Override
@@ -299,6 +312,7 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         
         return orderAsText;
     }
+
 
     
 }
