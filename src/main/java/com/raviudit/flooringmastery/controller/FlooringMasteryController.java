@@ -112,6 +112,20 @@ public class FlooringMasteryController {
     
     private void editOrder() throws FlooringMasteryFilePersistanceException{
         
+        String[] date = new String[3];
+        
+        date[0] = view.getYear();
+        date[1] = view.getMonth();
+        date[2] = view.getDay();
+        
+        int orderNumber = view.getOrderNumber();
+        
+        Order workingOrder = service.getOrder(date[1], date[2], date[0], orderNumber);
+        
+        view.displayOrder(workingOrder);
+        
+        
+        
     }
     
     private void removeOrder() throws FlooringMasteryFilePersistanceException{
