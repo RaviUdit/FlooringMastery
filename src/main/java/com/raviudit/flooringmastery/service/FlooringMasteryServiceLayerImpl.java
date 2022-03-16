@@ -95,8 +95,59 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
     }
  
     @Override
-    public Order editOrder(String month, String day, String year, String customerName, String stateName, String productType, String area) throws FlooringMasteryFilePersistanceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Order compileEditedOrder(Order editOrder, String customerName, String stateName, String productType, String area) throws FlooringMasteryFilePersistanceException {
+        
+        Order editedOrder = editOrder;
+        
+        if (customerName.isBlank() == false){
+            editedOrder.setCustomerName(customerName);
+        }
+        
+        if (stateName.isBlank() == false){
+            editedOrder.setState(stateName);
+        }
+        
+        if (productType.isBlank() == false){
+            editedOrder.setProductType(productType);
+        }
+        
+        if (area.isBlank() == false){
+            BigDecimal orderArea = new BigDecimal(area);
+            editedOrder.setArea(orderArea);
+        }
+        
+        Taxes orderTaxes = getTaxesByState(editedOrder.getState());
+        Product orderProduct = getProductByName(editedOrder.getProductType());
+        
+        BigDecimal materialCost = orderProduct.getCostPerSquareFoot().multiply(editedOrder.getArea());
+        BigDecimal laborCost = orderProduct.getLaborCostPerSquareFoot().multiply(editedOrder.getArea());
+        BigDecimal costBeforeTax = materialCost.add(laborCost);
+        
+        BigDecimal taxDivisor = new BigDecimal("100");
+        BigDecimal orderTaxRate = orderTaxes.getTaxRate().divide( taxDivisor, 2, RoundingMode.HALF_UP);
+        BigDecimal orderTax = costBeforeTax.multiply(orderTaxRate);
+        
+        BigDecimal orderTotal = costBeforeTax.add(orderTax);
+        
+        editedOrder.setCostPerSquareFoot(orderProduct.getCostPerSquareFoot());
+        editedOrder.setLaborCostPerSquareFoot(orderProduct.getLaborCostPerSquareFoot());
+        editedOrder.setMaterialCost(materialCost);
+        editedOrder.setLaborCost(laborCost);
+        
+        editedOrder.setTax(orderTax.setScale(2, RoundingMode.HALF_UP));
+        editedOrder.setTotal(orderTotal.setScale(2, RoundingMode.HALF_UP));
+        
+        return editedOrder;
+        
+        
+    }
+    
+    @Override
+    public void editOrder(String month, String day, String year, Order editedOrder) throws FlooringMasteryFilePersistanceException {
+        
+        String orderString = compileDate(month, day, year);
+        
+        dao.editOrder(orderString, editedOrder);
     }
     
     @Override
@@ -123,6 +174,8 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         
         return orderDate;
     }
+
+    
 
 
 }

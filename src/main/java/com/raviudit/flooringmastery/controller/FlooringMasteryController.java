@@ -145,7 +145,31 @@ public class FlooringMasteryController {
         
         String newArea = view.getNewArea(workingOrder.getArea().toString());
         
+        workingOrder = service.compileEditedOrder(workingOrder, newName, newState, newProduct, newArea);
         
+        view.displayOrder(workingOrder);
+        
+        boolean closeFunction = false;
+        
+        String confirmEdit = "n";
+        confirmEdit = view.confirmationMessage("Would you like to submit this edited order? (Y/N)");
+        
+        while (closeFunction == false){
+            if (confirmEdit.equalsIgnoreCase("y")){
+                
+                service.editOrder(date[1], date[2], date[0], workingOrder);
+                view.confirmationMessage("Order Edited");
+                closeFunction = true;
+            } else if (confirmEdit.equalsIgnoreCase("n")){
+                
+                view.confirmationMessage("Order Not Edited");
+                closeFunction = true;
+            } else {
+
+                view.confirmationMessage("Unspecified option. Please choose Yes or No (Y/N)");
+                closeFunction = false;
+            }
+        }
     }
     
     private void removeOrder() throws FlooringMasteryFilePersistanceException{

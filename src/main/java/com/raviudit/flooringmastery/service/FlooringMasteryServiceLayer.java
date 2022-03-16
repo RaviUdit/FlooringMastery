@@ -28,7 +28,9 @@ public interface FlooringMasteryServiceLayer {
     Order addOrder(String month, String day, String year, String customerName, String stateName, String productType, String area)
                                                  throws FlooringMasteryFilePersistanceException;
     
-    Order editOrder(String month, String day, String year, String customerName, String stateName, String productType, String area)
+    Order compileEditedOrder(Order editOrder, String customerName, String stateName, String productType, String area) throws FlooringMasteryFilePersistanceException;
+    
+    void editOrder(String month, String day, String year, Order editedOrder)
                                                  throws FlooringMasteryFilePersistanceException;
     
     Order getOrder(String month, String day, String year, int orderNumber)throws FlooringMasteryFilePersistanceException;
