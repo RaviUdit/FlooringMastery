@@ -46,7 +46,7 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
     @Override
     public List<Taxes> getTaxes() throws FlooringMasteryFilePersistanceException {
         
-        loadProductsFromFile();
+        loadTaxesFromFile();
         return new ArrayList(taxes.values());
     }
 

@@ -49,6 +49,7 @@ public class FlooringMasteryController {
                         break;
                     case 3:
                         
+                        editOrder();
                         break;
                     case 4:
                         
