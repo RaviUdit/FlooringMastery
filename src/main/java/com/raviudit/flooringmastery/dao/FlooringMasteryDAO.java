@@ -17,6 +17,10 @@ import java.util.List;
 public interface FlooringMasteryDAO {
     
     
+    List<Taxes> getTaxes() throws FlooringMasteryFilePersistanceException;
+    
+    List<Product> getProducts() throws FlooringMasteryFilePersistanceException;
+    
     Taxes getTaxesByState(String stateAbbr) throws FlooringMasteryFilePersistanceException;
     
     Product getProductByName(String productName) throws FlooringMasteryFilePersistanceException;

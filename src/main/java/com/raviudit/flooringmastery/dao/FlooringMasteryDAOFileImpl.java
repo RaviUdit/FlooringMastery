@@ -42,6 +42,21 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
 
     //FUNCTIONS
     
+    
+    @Override
+    public List<Taxes> getTaxes() throws FlooringMasteryFilePersistanceException {
+        
+        loadProductsFromFile();
+        return new ArrayList(taxes.values());
+    }
+
+    @Override
+    public List<Product> getProducts() throws FlooringMasteryFilePersistanceException {
+        
+        loadProductsFromFile();
+        return new ArrayList(products.values());
+    }
+    
     @Override
     public Taxes getTaxesByState(String stateAbbr) throws FlooringMasteryFilePersistanceException {
         
@@ -312,6 +327,7 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         
         return orderAsText;
     }
+
 
 
     

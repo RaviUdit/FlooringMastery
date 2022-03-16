@@ -7,6 +7,8 @@ package com.raviudit.flooringmastery.controller;
 
 import com.raviudit.flooringmastery.dao.FlooringMasteryFilePersistanceException;
 import com.raviudit.flooringmastery.model.Order;
+import com.raviudit.flooringmastery.model.Product;
+import com.raviudit.flooringmastery.model.Taxes;
 import com.raviudit.flooringmastery.service.FlooringMasteryServiceLayer;
 import com.raviudit.flooringmastery.view.FlooringMasteryView;
 import java.util.List;
@@ -102,8 +104,15 @@ public class FlooringMasteryController {
         String[] orderInfo = new String[4];
         
         orderInfo[0] = view.getCustomerName();
+        
+        List<Taxes> stateList = service.getTaxes();
+        view.displayTaxes(stateList);
         orderInfo[1] = view.getState();
+        
+        List<Product> productList = service.getProducts();
+        view.displayProducts(productList);
         orderInfo[2] = view.getProductType();
+        
         orderInfo[3] = view.getArea();
         
         service.addOrder(date[1], date[2], date[0], orderInfo[0], orderInfo[1], orderInfo[2], orderInfo[3]);
@@ -124,6 +133,17 @@ public class FlooringMasteryController {
         
         view.displayOrder(workingOrder);
         
+        String newName = view.getNewCustomerName(workingOrder.getCustomerName());
+        
+        List<Taxes> stateList = service.getTaxes();
+        view.displayTaxes(stateList);
+        String newState = view.getNewState(workingOrder.getState());
+        
+        List<Product> productList = service.getProducts();
+        view.displayProducts(productList);
+        String newProduct = view.getNewProductType(workingOrder.getProductType());
+        
+        String newArea = view.getNewArea(workingOrder.getArea().toString());
         
         
     }

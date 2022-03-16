@@ -17,6 +17,10 @@ import java.util.List;
  */
 public interface FlooringMasteryServiceLayer {
     
+    List<Taxes> getTaxes() throws FlooringMasteryFilePersistanceException;
+    
+    List<Product> getProducts() throws FlooringMasteryFilePersistanceException;
+    
     Taxes getTaxesByState(String stateAbbr) throws FlooringMasteryFilePersistanceException;
     
     Product getProductByName(String productName) throws FlooringMasteryFilePersistanceException;

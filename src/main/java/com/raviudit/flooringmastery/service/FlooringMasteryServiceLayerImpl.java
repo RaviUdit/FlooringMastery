@@ -26,6 +26,18 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         this.dao = dao;
     }
 
+    
+    @Override
+    public List<Taxes> getTaxes() throws FlooringMasteryFilePersistanceException {
+        
+        return dao.getTaxes();
+    }
+
+    @Override
+    public List<Product> getProducts() throws FlooringMasteryFilePersistanceException {
+        return dao.getProducts();
+    }
+
     @Override
     public Taxes getTaxesByState(String stateAbbr) throws FlooringMasteryFilePersistanceException {
         return dao.getTaxesByState(stateAbbr);

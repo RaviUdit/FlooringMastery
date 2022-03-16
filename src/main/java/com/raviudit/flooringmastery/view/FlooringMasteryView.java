@@ -6,6 +6,8 @@
 package com.raviudit.flooringmastery.view;
 
 import com.raviudit.flooringmastery.model.Order;
+import com.raviudit.flooringmastery.model.Product;
+import com.raviudit.flooringmastery.model.Taxes;
 import java.util.List;
 
 /**
@@ -69,12 +71,17 @@ public class FlooringMasteryView {
     
     public void displayOrder(Order order){
         
-        String orderInfo = String.format("%s : %s %s %s %s $%s", 
+        io.print("Order Number, Customer Name, State, Product, Total Area, Material Cost, Labor Cost, Taxes, Total");
+        
+        String orderInfo = String.format("%s : %s %s %s %s $%s $%s $%s $%s", 
             String.valueOf(order.getOrderNumber()), 
             order.getCustomerName(),
             order.getState(),
             order.getProductType(),
             order.getArea().toString(),
+            order.getMaterialCost(),
+            order.getLaborCost(),
+            order.getTax(),
             order.getTotal().toString());
             
         io.print(orderInfo);
@@ -82,6 +89,42 @@ public class FlooringMasteryView {
         io.readString("Hit Enter To Continue");
     }   
     
+    public void displayProducts(List<Product> productList){
+        
+        io.print("Product Type, Cost Per Square Foot, Labor Cost Per Square Foot");
+        
+        for (Product currentProduct: productList){
+            
+            String productInfo = String.format("%s, $%s, $%s", 
+                    
+                    currentProduct.getProductType(),
+                    currentProduct.getCostPerSquareFoot().toString(),
+                    currentProduct.getLaborCostPerSquareFoot().toString());
+            
+            io.print(productInfo);
+        }
+        
+        
+    }
+    
+    public void displayTaxes(List<Taxes> taxesList){
+        
+        io.print("State Code, State, Tax Rate");
+        
+        for (Taxes currentTax: taxesList){
+            
+            String taxInfo = String.format("%s, %s, $%s", 
+                    
+                    currentTax.getStateAbbr(),
+                    currentTax.getStateName(),
+                    currentTax.getTaxRate().toString());
+            
+            io.print(taxInfo);
+        }
+    }
+    
+    
+    //Retrieval fuctions. 
     public String getDay(){
         return io.readString("Please enter the Day of the requested order [DD].");
     }
@@ -108,6 +151,22 @@ public class FlooringMasteryView {
     
     public String getArea(){
         return io.readString("Please enter the area(feet squared) that you what to cover. Minimum order size is 100sq. feet.");
+    }
+    
+    public String getNewCustomerName(String oldCustomerName){
+        return io.readString("Please enter the name of the customer. (" + oldCustomerName + ")");
+    }
+    
+    public String getNewState(String oldState){
+        return io.readString("Please enter the State the order will be fufilled in. (" + oldState + ")");
+    }
+    
+    public String getNewProductType(String oldProductType){
+        return io.readString("Please enter the product you would like to purchase. (" + oldProductType +")" );
+    }
+    
+    public String getNewArea(String oldArea){
+        return io.readString("Please enter the area(feet squared) that you what to cover. Minimum order size is 100sq. feet. (" + oldArea + ")" );
     }
     
     public int getOrderNumber(){
