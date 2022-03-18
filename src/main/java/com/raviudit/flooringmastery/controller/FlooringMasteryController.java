@@ -116,7 +116,34 @@ public class FlooringMasteryController {
         
         orderInfo[3] = view.getArea();
         
-        service.addOrder(date[1], date[2], date[0], orderInfo[0], orderInfo[1], orderInfo[2], orderInfo[3]);
+        Order newOrder = new Order(1);
+        
+        newOrder = service.compileOrder(newOrder, orderInfo[0], orderInfo[1], orderInfo[2], orderInfo[3]);
+        
+        view.displayOrder(newOrder);
+        //service.addOrder(date[1], date[2], date[0], orderInfo[0], orderInfo[1], orderInfo[2], orderInfo[3]);
+        
+        boolean closeFunction = false; 
+        
+        String confirmOrder = "n";
+        confirmOrder = view.confirmationMessage("Would you like to submit this order? (Y/N)");
+        
+        while (closeFunction == false){
+            if (confirmOrder.equalsIgnoreCase("y")){
+                
+                service.addOrder(date[1], date[2], date[0], newOrder);
+                view.confirmationMessage("Order Submitted");
+                closeFunction = true;
+            } else if (confirmOrder.equalsIgnoreCase("n")){
+                
+                view.confirmationMessage("Order Not Submitted");
+                closeFunction = true;
+            } else {
+
+                view.confirmationMessage("Unspecified option. Please choose Yes or No (Y/N)");
+                closeFunction = false;
+            }
+        }
         
     }
     
@@ -146,7 +173,7 @@ public class FlooringMasteryController {
         
         String newArea = view.getNewArea(workingOrder.getArea().toString());
         
-        workingOrder = service.compileEditedOrder(workingOrder, newName, newState, newProduct, newArea);
+        workingOrder = service.compileOrder(workingOrder, newName, newState, newProduct, newArea);
         
         view.displayOrder(workingOrder);
         

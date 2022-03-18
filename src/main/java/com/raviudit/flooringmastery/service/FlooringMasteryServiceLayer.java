@@ -25,10 +25,10 @@ public interface FlooringMasteryServiceLayer {
     
     Product getProductByName(String productName) throws FlooringMasteryFilePersistanceException;
     
-    Order addOrder(String month, String day, String year, String customerName, String stateName, String productType, String area)
+    Order addOrder(String month, String day, String year, Order newOrder)
                                                  throws FlooringMasteryFilePersistanceException;
     
-    Order compileEditedOrder(Order editOrder, String customerName, String stateName, String productType, String area) throws FlooringMasteryFilePersistanceException;
+    Order compileOrder(Order editOrder, String customerName, String stateName, String productType, String area) throws FlooringMasteryFilePersistanceException;
     
     void editOrder(String month, String day, String year, Order editedOrder)
                                                  throws FlooringMasteryFilePersistanceException;
