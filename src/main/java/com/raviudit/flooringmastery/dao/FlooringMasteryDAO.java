@@ -35,5 +35,5 @@ public interface FlooringMasteryDAO {
     
     Order removeOrder(String orderDate, int orderNumber) throws FlooringMasteryFilePersistanceException;
     
-    
+    public void exportOrderData() throws FlooringMasteryFilePersistanceException;
 }

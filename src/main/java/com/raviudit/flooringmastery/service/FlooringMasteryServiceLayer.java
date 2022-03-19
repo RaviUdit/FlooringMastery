@@ -39,4 +39,5 @@ public interface FlooringMasteryServiceLayer {
     
     Order removeOrder(String month, String day, String year, int orderNumber)throws FlooringMasteryFilePersistanceException;
     
+    void exportOrderData() throws FlooringMasteryFilePersistanceException;
 }

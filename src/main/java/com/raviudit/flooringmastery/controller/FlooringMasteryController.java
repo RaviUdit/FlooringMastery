@@ -57,6 +57,7 @@ public class FlooringMasteryController {
                         break;
                     case 5:
                         
+                        exportAll();
                         break;
                     case 6:
                         
@@ -236,8 +237,11 @@ public class FlooringMasteryController {
             }
         }
         
+    }
+    
+    private void exportAll() throws FlooringMasteryFilePersistanceException{
         
-        
+        service.exportOrderData();
     }
     
     private void unknownCommand(){

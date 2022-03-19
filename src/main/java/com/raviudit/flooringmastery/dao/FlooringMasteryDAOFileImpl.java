@@ -5,6 +5,7 @@
  */
 package com.raviudit.flooringmastery.dao;
 
+import static com.raviudit.flooringmastery.dao.FlooringMasteryBackupDAOFileImpl.ORDERS_FOLDER;
 import com.raviudit.flooringmastery.model.Order;
 import com.raviudit.flooringmastery.model.Product;
 import com.raviudit.flooringmastery.model.Taxes;
@@ -16,6 +17,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +39,8 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
     //File Code
     public static final String DELIMITER = ":&:";
     
+    public static final String BACKUP_FILE = "Backup/Orderlist.txt";
+    public static final String ORDERS_FOLDER = "Orders";
     public static final String TAXES_LOCATION = "Data/Taxes.txt";
     public static final String PRODUCT_LOCATION = "Data/Products.txt";
 
@@ -327,8 +331,20 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         
         return orderAsText;
     }
-
-
-
+    
+    @Override
+    public void exportOrderData() throws FlooringMasteryFilePersistanceException {
+        
+        LocalDateTime timeStamp = LocalDateTime.now();
+        File directory = new File(ORDERS_FOLDER);
+        
+        File[] filesList = directory.listFiles();
+        
+        for (File file: filesList){
+            
+            System.out.println("File name: "+file.getName());
+        }
+    //    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
