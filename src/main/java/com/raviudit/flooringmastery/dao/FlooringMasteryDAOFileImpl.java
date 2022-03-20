@@ -39,7 +39,7 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
     //File Code
     public static final String DELIMITER = ":&:";
     
-    public static final String BACKUP_FILE = "Backup/Orderlist.txt";
+    
     public static final String ORDERS_FOLDER = "Orders";
     public static final String TAXES_LOCATION = "Data/Taxes.txt";
     public static final String PRODUCT_LOCATION = "Data/Products.txt";
@@ -340,11 +340,46 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         
         File[] filesList = directory.listFiles();
         
+        //timeStamp.
+        
+        PrintWriter out;
+        String orderAsText;
+        //String exportDate = "Backup/Export_" + timeStamp.toString();
+        
+        try{
+            out = new PrintWriter(new FileWriter("Backup/DataExport.txt"));
+        }catch(IOException e){
+            throw new FlooringMasteryFilePersistanceException("Could not create File", e);
+        }
+        
+        String headerString = "OrderNumber:&:CustomerName:&:State:&:TaxRate:&:ProductType:&:Area:&:CostPerSquareFoot:&:LaborCostPerSquareFoot:&:MaterialCost:&:LaborCost:&:Tax:&:Total:&:OrderDate";
+        out.println(headerString);
+        out.flush();
+        
         for (File file: filesList){
             
-            System.out.println("File name: "+file.getName());
+            loadOrdersFromFile("Orders/" + file.getName());
+            List<Order> orderList = new ArrayList(orders.values());
+           
+            String originalString = file.getName();
+            String month = originalString.substring(7, 9);
+            String day = originalString.substring(9, 11);
+            String year = originalString.substring(11,15);
+            
+            for (Order currentOrder : orderList){
+                orderAsText = marshallOrder(currentOrder);
+                out.println(orderAsText + DELIMITER + month + "-" + day + "-" + year);
+                out.flush();
+            
+            }
+            
+            orders.clear();
+        
+            //System.out.println("File name: "+file.getName());
         }
-    //    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        out.close();
+    
     }
     
 }

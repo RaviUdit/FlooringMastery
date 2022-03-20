@@ -1,0 +1,2 @@
+OrderNumber:&:CustomerName:&:State:&:TaxRate:&:ProductType:&:Area:&:CostPerSquareFoot:&:LaborCostPerSquareFoot:&:MaterialCost:&:LaborCost:&:Tax:&:Total
+1:&:Ravi:&:HI:&:5.5:&:Tile:&:200:&:3.50:&:4.15:&:700.00:&:830.00:&:91.80:&:1621.80
