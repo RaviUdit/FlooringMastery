@@ -40,4 +40,24 @@ public interface FlooringMasteryServiceLayer {
     Order removeOrder(String month, String day, String year, int orderNumber)throws FlooringMasteryFilePersistanceException;
     
     void exportOrderData() throws FlooringMasteryFilePersistanceException;
+    
+    // Exceptions
+    
+    void areServicesAvailableThere(String stateCode) throws FlooringMasteryStateCodeDoesNotExistException, 
+                                                            FlooringMasteryFilePersistanceException;
+    
+    void isProductAvailable(String product) throws FlooringMasteryProductDoesNotExistException,
+                                                   FlooringMasteryFilePersistanceException;
+    
+    void isFieldBlank(String field) throws FlooringMasteryFieldIsBlankException;
+    
+    void isAreaValid(String area) throws FlooringMasteryAreaIsNotValidException;
+    
+    void isNameValid(String name) throws FlooringMasteryNameIsNotValidException;
+    
+    void isMonthValid(String name) throws FlooringMasteryMonthIsNotValidException;
+    
+    void isDateValid(String day, String month, String year) throws FlooringMasteryDayIsNotValid;
+    
+    void isYearValid(String year) throws FlooringMasteryYearIsNotValid;
 }

@@ -5,7 +5,6 @@
  */
 package com.raviudit.flooringmastery.dao;
 
-import static com.raviudit.flooringmastery.dao.FlooringMasteryBackupDAOFileImpl.ORDERS_FOLDER;
 import com.raviudit.flooringmastery.model.Order;
 import com.raviudit.flooringmastery.model.Product;
 import com.raviudit.flooringmastery.model.Taxes;

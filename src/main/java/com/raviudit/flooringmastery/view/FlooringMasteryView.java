@@ -158,7 +158,7 @@ public class FlooringMasteryView {
     }
     
     public String getNewState(String oldState){
-        return io.readString("Please enter the State the order will be fufilled in. (" + oldState + ")");
+        return io.readString("Please enter the State Code the order will be fufilled in. (" + oldState + ")");
     }
     
     public String getNewProductType(String oldProductType){

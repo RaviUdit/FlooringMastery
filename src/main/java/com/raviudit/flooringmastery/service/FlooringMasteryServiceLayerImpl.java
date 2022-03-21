@@ -12,7 +12,14 @@ import com.raviudit.flooringmastery.model.Product;
 import com.raviudit.flooringmastery.model.Taxes;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -168,18 +175,187 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         
     }
     
-    private String compileDate(String month, String day, String year){
-        
-        String orderDate = "Orders/Orders_" + month + day + year + ".txt";
-        
-        return orderDate;
-    }
-
     @Override
     public void exportOrderData() throws FlooringMasteryFilePersistanceException {
     
         dao.exportOrderData();
     }
 
+    private String compileDate(String month, String day, String year){
+        
+        String orderDate = "Orders/Orders_" + month + day + year + ".txt";
+        
+        return orderDate;
+    }
+    
+    // Exceptions
 
-}
+    private void checkIfStateExists(String stateCode) throws FlooringMasteryStateCodeDoesNotExistException,
+                                                             FlooringMasteryFilePersistanceException{
+        
+        List<String> queryList = dao.getTaxes().stream().map((p)->p.getStateAbbr()).collect(Collectors.toList());
+        boolean stateExists = queryList.contains(stateCode);
+        
+        if (stateExists != true){
+            throw new FlooringMasteryStateCodeDoesNotExistException("We do not offer services in " + stateCode + ".");
+        }
+    }
+
+    @Override
+    public void areServicesAvailableThere(String stateCode) throws FlooringMasteryStateCodeDoesNotExistException,
+                                                                   FlooringMasteryFilePersistanceException{
+        checkIfStateExists(stateCode);
+    }
+    
+    private void checkIfProductExists(String product) throws FlooringMasteryProductDoesNotExistException,
+                                                             FlooringMasteryFilePersistanceException{
+        
+        List<String> queryList = dao.getProducts().stream().map((p)->p.getProductType()).collect(Collectors.toList());
+        boolean productExists = queryList.contains(product);
+        
+        if (productExists != true){
+            throw new FlooringMasteryProductDoesNotExistException(product + " is unavailable to order.");
+        }
+    }
+    
+    @Override
+    public void isProductAvailable(String product) throws FlooringMasteryProductDoesNotExistException,
+                                                          FlooringMasteryFilePersistanceException{
+        checkIfProductExists(product);
+    }
+    
+    private void checkIfFieldIsBlank(String field) throws FlooringMasteryFieldIsBlankException{
+        
+        if (field.isBlank() == true){
+            throw new FlooringMasteryFieldIsBlankException("This field cannot be blank. Please choose from the listed options.");
+        }
+    }
+    
+    @Override
+    public void isFieldBlank(String field) throws FlooringMasteryFieldIsBlankException{
+        checkIfFieldIsBlank(field);
+    }
+    
+    private void checkIfAreaIsValid(String area) throws FlooringMasteryAreaIsNotValidException{
+        
+        Pattern p = Pattern.compile("[^0-9]");
+        Matcher m = p.matcher(area);
+        
+        boolean notValid = m.find();
+        
+        if (notValid == true){
+            throw new FlooringMasteryAreaIsNotValidException("Area in sq. ft. must be represented in numbers, the minimum value accepted is 100.");
+        }
+        
+        BigDecimal inputArea = new BigDecimal(area);
+        BigDecimal minimumArea = new BigDecimal("100");
+        
+        int comparison = inputArea.compareTo(minimumArea);
+        
+        if (comparison == -1){
+            throw new FlooringMasteryAreaIsNotValidException( area + "sq. ft. is lower than the minimum allowed area (100 sq. ft.) ");
+        }
+    }
+    
+    @Override
+    public void isAreaValid(String area) throws FlooringMasteryAreaIsNotValidException{
+        checkIfAreaIsValid(area);
+    }
+    
+    private void checkIfNameIsValid(String name)  throws FlooringMasteryNameIsNotValidException{
+        
+        //Regex, matches for any non comma, period, or alphanumeric character.
+        Pattern p = Pattern.compile("[^a-z0-9., ]", Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(name);
+        
+        boolean notValid = m.find();
+        
+        if (notValid == true){
+            throw new FlooringMasteryNameIsNotValidException("Names cannot contain special characters.");
+        }
+    }
+    
+    @Override
+    public void isNameValid(String name) throws FlooringMasteryNameIsNotValidException{
+        
+        checkIfNameIsValid(name);
+    }
+    
+    private void checkIfMonthIfValid(String month) throws FlooringMasteryMonthIsNotValidException{
+        
+        Pattern p = Pattern.compile("[^0-9]");
+        Matcher m = p.matcher(month);
+        
+        boolean notValid = m.find();
+        
+        if (notValid == true){
+            throw new FlooringMasteryMonthIsNotValidException("Months must be represented through 01-12");
+        }
+        
+        int checkValue = Integer.parseInt(month);
+        
+        if (checkValue < 1 || checkValue > 12){
+            throw new FlooringMasteryMonthIsNotValidException("Months must be through 01-12.");
+        }
+    }
+    
+    @Override
+    public void isMonthValid(String month) throws FlooringMasteryMonthIsNotValidException{
+        
+        checkIfMonthIfValid(month);
+    }
+    
+    private void checkIfDayIsValid(String day, String month, String year) throws FlooringMasteryDayIsNotValid{
+        
+        Pattern p = Pattern.compile("[^0-9]");
+        Matcher m = p.matcher(day);
+        
+        boolean notValid = m.find();
+        
+        if (notValid == true){
+            throw new FlooringMasteryDayIsNotValid("Dates nust be represented by numberic values.");
+        }
+        
+        
+        boolean dateValid = true;
+        
+        try{
+            LocalDate.parse( month + "/" + day + "/" + year, DateTimeFormatter.ofPattern("MM/dd/yyyy").withResolverStyle(ResolverStyle.STRICT));
+            
+            dateValid = true;
+        } catch (DateTimeParseException e){
+            
+            dateValid = false; 
+        }
+        
+        if (dateValid == false){
+            throw new FlooringMasteryDayIsNotValid("This is not a valid Date.");
+        }
+        
+        
+    }
+
+    @Override
+    public void isDateValid(String day, String month, String year) throws FlooringMasteryDayIsNotValid {
+       
+        checkIfDayIsValid(day, month, year);
+    }
+    
+    private void checkIfYearIsValid(String year) throws FlooringMasteryYearIsNotValid{
+    
+        Pattern p = Pattern.compile("[^0-9]");
+        Matcher m = p.matcher(year);
+        
+        boolean notValid = m.find();
+        
+        if (notValid == true){
+            throw new FlooringMasteryYearIsNotValid("Years nust be represented by numberic values.");
+        }
+    }
+
+    @Override
+    public void isYearValid(String year) throws FlooringMasteryYearIsNotValid {
+        
+        checkIfYearIsValid(year);
+    }
+ }
