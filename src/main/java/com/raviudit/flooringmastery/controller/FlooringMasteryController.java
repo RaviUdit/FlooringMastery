@@ -442,8 +442,13 @@ public class FlooringMasteryController {
         do{
             try{
                 newState = view.getNewState(workingOrder.getState());
+                
+                if(newState.isBlank()){
+                    newState = workingOrder.getState();
+                }
                 service.areServicesAvailableThere(newState);
                 
+                functionError = false;
             }catch(FlooringMasteryStateCodeDoesNotExistException | FlooringMasteryFilePersistanceException e){
                 
                 functionError = true; 
@@ -455,9 +460,44 @@ public class FlooringMasteryController {
         //GET PRODUCT
         List<Product> productList = service.getProducts();
         view.displayProducts(productList);
-        String newProduct = view.getNewProductType(workingOrder.getProductType());
+        String newProduct = "0";
         
-        String newArea = view.getNewArea(workingOrder.getArea().toString());
+        do {
+            try{
+                newProduct = view.getNewProductType(workingOrder.getProductType());
+                
+                if(newProduct.isBlank()){
+                    newProduct = workingOrder.getProductType();
+                }
+                service.isProductAvailable(newProduct);
+                
+                functionError = false;
+            }catch(FlooringMasteryProductDoesNotExistException e){
+                
+                functionError = true; 
+                view.displayErrorMessage(e.getMessage());
+            }
+        }while(functionError);
+        
+        //GET AREA
+        String newArea = "0";
+        
+        do{
+            try{
+                newArea = view.getNewArea(workingOrder.getArea().toString());
+                
+                if (newArea.isBlank()){
+                    newArea = workingOrder.getArea().toString();
+                }
+                service.isAreaValid(newArea);
+                
+                functionError = false;
+            } catch (FlooringMasteryAreaIsNotValidException e){
+                
+                functionError = true; 
+                view.displayErrorMessage(e.getMessage());
+            }
+        }while(functionError);
         
         workingOrder = service.compileOrder(workingOrder, newName, newState, newProduct, newArea);
         
