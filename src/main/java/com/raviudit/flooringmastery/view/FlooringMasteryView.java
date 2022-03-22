@@ -169,8 +169,8 @@ public class FlooringMasteryView {
         return io.readString("Please enter the area(feet squared) that you what to cover. Minimum order size is 100sq. feet. (" + oldArea + ")" );
     }
     
-    public int getOrderNumber(){
-        return io.readInt("Please enter the Order Number of the order you wish to remove.");
+    public String getOrderNumber(){
+        return io.readString("Please enter the Order Number of the order you wish to alter.");
     }
     
     public String confirmationMessage(String message){

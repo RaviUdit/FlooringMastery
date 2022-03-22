@@ -15,6 +15,7 @@ import com.raviudit.flooringmastery.service.FlooringMasteryDayIsNotValidExceptio
 import com.raviudit.flooringmastery.service.FlooringMasteryFieldIsBlankException;
 import com.raviudit.flooringmastery.service.FlooringMasteryMonthIsNotValidException;
 import com.raviudit.flooringmastery.service.FlooringMasteryNameIsNotValidException;
+import com.raviudit.flooringmastery.service.FlooringMasteryOrderNumberIsNotValidException;
 import com.raviudit.flooringmastery.service.FlooringMasteryProductDoesNotExistException;
 import com.raviudit.flooringmastery.service.FlooringMasteryServiceLayer;
 import com.raviudit.flooringmastery.service.FlooringMasteryStateCodeDoesNotExistException;
@@ -81,7 +82,7 @@ public class FlooringMasteryController {
 
             } catch (FlooringMasteryFilePersistanceException | FlooringMasteryFieldIsBlankException | 
                     FlooringMasteryYearIsNotValidException |  FlooringMasteryMonthIsNotValidException |
-                    FlooringMasteryDayIsNotValidException e){
+                    FlooringMasteryDayIsNotValidException | FlooringMasteryOrderNumberIsNotValidException e){
 
                 view.displayErrorMessage(e.getMessage());
             }
@@ -335,15 +336,83 @@ public class FlooringMasteryController {
         
     }
     
-    private void editOrder() throws FlooringMasteryFilePersistanceException{
+    private void editOrder() throws FlooringMasteryFilePersistanceException, FlooringMasteryYearIsNotValidException,
+                                    FlooringMasteryMonthIsNotValidException, FlooringMasteryDayIsNotValidException,
+                                    FlooringMasteryOrderNumberIsNotValidException{
+        
+        boolean functionError = false;
         
         String[] date = new String[3];
         
-        date[0] = view.getYear();
-        date[1] = view.getMonth();
-        date[2] = view.getDay();
+        //date[0] = view.getYear();
+        //date[1] = view.getMonth();
+        //date[2] = view.getDay();
         
-        int orderNumber = view.getOrderNumber();
+        do{
+            try{
+
+                date[0] = view.getYear();
+                service.isFieldBlank(date[0]);
+                service.isYearValid(date[0]);
+
+                functionError = false; 
+            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryYearIsNotValidException e){
+     
+                functionError = true;     
+                view.displayErrorMessage(e.getMessage());
+            }
+        } while (functionError);
+
+                
+        do{
+            try{
+                
+                date[1] = view.getMonth();
+                service.isFieldBlank(date[1]);
+                service.isMonthValid(date[1]);
+                
+                functionError = false;
+            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryMonthIsNotValidException e){
+               
+                functionError = true; 
+                view.displayErrorMessage(e.getMessage());  
+            }
+        } while (functionError);
+
+                
+        do{
+            try{
+        
+                date[2] = view.getDay();        
+                service.isFieldBlank(date[2]);        
+                service.isDateValid(date[2], date[1], date[0]);
+                        //service.isDateValid("01", "06", "2022");         
+                functionError = false;
+            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryDayIsNotValidException e){
+
+                functionError = true; 
+                view.displayErrorMessage(e.getMessage());
+            }        
+        } while (functionError);
+        
+        String ordernum = "0";
+        
+        do{
+            try{
+                
+                ordernum = view.getOrderNumber();
+                service.isFieldBlank(ordernum);
+                service.isOrderNumberValid(date[2], date[1], date[0], ordernum);
+                
+                functionError = false;
+            } catch(FlooringMasteryFieldIsBlankException | FlooringMasteryOrderNumberIsNotValidException e){
+                
+                functionError = true; 
+                view.displayErrorMessage(e.getMessage());
+            }
+        }while(functionError);
+        
+        int orderNumber = Integer.parseInt(ordernum);
         
         Order workingOrder = service.getOrder(date[1], date[2], date[0], orderNumber);
         
@@ -396,7 +465,8 @@ public class FlooringMasteryController {
         date[1] = view.getMonth();
         date[2] = view.getDay();
         
-        int orderNumber = view.getOrderNumber();
+        String ordernum = view.getOrderNumber();
+        int orderNumber = Integer.parseInt(ordernum);
         
         view.displayOrder(service.getOrder(date[1], date[2], date[0], orderNumber));
         

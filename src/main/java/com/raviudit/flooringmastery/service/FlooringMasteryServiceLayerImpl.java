@@ -385,4 +385,38 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         
         checkIfDateIsInTheFuture(day, month, year);
     }
+    
+    private void checkIfOrderNumberIsValid(String day, String month, String year, String orderNumber) throws FlooringMasteryOrderNumberIsNotValidException,
+                                                                                                             FlooringMasteryFilePersistanceException{
+        
+        Pattern p = Pattern.compile("[^0-9]");
+        Matcher m = p.matcher(orderNumber);
+        
+        boolean notValid = m.find();
+        
+        if (notValid == true){
+            throw new FlooringMasteryOrderNumberIsNotValidException("Order Numbers nust be represented by numberic values.");
+        }
+        
+        String orderDate = compileDate(month, day, year);
+        
+        //List<String> queryList = dao.getProducts().stream().map((p)->p.getProductType()).collect(Collectors.toList());
+        List<Integer> queryList = dao.getAllOrdersOnDate(orderDate).stream().map((o)->o.getOrderNumber()).collect(Collectors.toList());
+        int queryNumber = Integer.parseInt(orderNumber);
+        
+        boolean orderExists = queryList.contains(queryNumber);
+        
+        if (orderExists != true){
+            String orderDate2 = month + "-" + day + "-" + year;
+            throw new FlooringMasteryOrderNumberIsNotValidException(orderNumber + " on " + orderDate2 +  " is not a preexisting order.");
+        }
+        
+    }
+
+    @Override
+    public void isOrderNumberValid(String day, String month, String year, String orderNumber) throws FlooringMasteryOrderNumberIsNotValidException,
+                                                                                                     FlooringMasteryFilePersistanceException{
+        
+        checkIfOrderNumberIsValid(day, month, year, orderNumber);
+    }
  }
