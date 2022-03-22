@@ -418,12 +418,41 @@ public class FlooringMasteryController {
         
         view.displayOrder(workingOrder);
         
-        String newName = view.getNewCustomerName(workingOrder.getCustomerName());
+        //GET NAME
+        String newName = "0";
+        do{
+            try{
+                newName = view.getNewCustomerName(workingOrder.getCustomerName());
+                service.isNameValid(newName);
+                
+                functionError = false;
+            }catch(FlooringMasteryNameIsNotValidException e){
+                
+                functionError = true; 
+                view.displayErrorMessage(e.getMessage());
+            }
+        }while(functionError);
         
+        
+        //GET TAXES
         List<Taxes> stateList = service.getTaxes();
         view.displayTaxes(stateList);
-        String newState = view.getNewState(workingOrder.getState());
+        String newState = "0";
         
+        do{
+            try{
+                newState = view.getNewState(workingOrder.getState());
+                service.areServicesAvailableThere(newState);
+                
+            }catch(FlooringMasteryStateCodeDoesNotExistException | FlooringMasteryFilePersistanceException e){
+                
+                functionError = true; 
+                view.displayErrorMessage(e.getMessage());
+            }
+            
+        }while(functionError);
+        
+        //GET PRODUCT
         List<Product> productList = service.getProducts();
         view.displayProducts(productList);
         String newProduct = view.getNewProductType(workingOrder.getProductType());
