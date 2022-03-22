@@ -358,4 +358,17 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         
         checkIfYearIsValid(year);
     }
+    
+    private void checkIfDateIsInTheFuture(String day, String month, String year) throws FlooringMasteryDateIsNotInTheFutureException{
+        
+        LocalDate ld = LocalDate.now();
+        LocalDate compareDate = LocalDate.parse(month + "/" + day + "/" + year, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        
+        boolean pastDate = ld.isBefore(compareDate);
+        
+        if (pastDate = true){
+            throw new FlooringMasteryDateIsNotInTheFutureException ("We only accept order for future dates.");
+        }
+        
+    }
  }
