@@ -57,7 +57,9 @@ public interface FlooringMasteryServiceLayer {
     
     void isMonthValid(String name) throws FlooringMasteryMonthIsNotValidException;
     
-    void isDateValid(String day, String month, String year) throws FlooringMasteryDayIsNotValid;
+    void isDateValid(String day, String month, String year) throws FlooringMasteryDayIsNotValidException;
     
-    void isYearValid(String year) throws FlooringMasteryYearIsNotValid;
+    void isYearValid(String year) throws FlooringMasteryYearIsNotValidException;
+    
+    void isAppointmentInTheFuture(String day, String month, String year) throws FlooringMasteryDateIsNotInTheFutureException;
 }

@@ -305,7 +305,7 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         checkIfMonthIfValid(month);
     }
     
-    private void checkIfDayIsValid(String day, String month, String year) throws FlooringMasteryDayIsNotValid{
+    private void checkIfDayIsValid(String day, String month, String year) throws FlooringMasteryDayIsNotValidException{
         
         Pattern p = Pattern.compile("[^0-9]");
         Matcher m = p.matcher(day);
@@ -313,14 +313,16 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         boolean notValid = m.find();
         
         if (notValid == true){
-            throw new FlooringMasteryDayIsNotValid("Dates nust be represented by numberic values.");
+            throw new FlooringMasteryDayIsNotValidException("Dates nust be represented by numberic values.");
         }
         
         
         boolean dateValid = true;
         
+        String date = year + "-" + month + "-" + day;
+        
         try{
-            LocalDate.parse( month + "/" + day + "/" + year, DateTimeFormatter.ofPattern("MM/dd/yyyy").withResolverStyle(ResolverStyle.STRICT));
+            LocalDate.parse( date, DateTimeFormatter.ofPattern("uuuu-M-d").withResolverStyle(ResolverStyle.STRICT));
             
             dateValid = true;
         } catch (DateTimeParseException e){
@@ -329,19 +331,19 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         }
         
         if (dateValid == false){
-            throw new FlooringMasteryDayIsNotValid("This is not a valid Date.");
+            throw new FlooringMasteryDayIsNotValidException("This is not a valid Date.");
         }
         
         
     }
 
     @Override
-    public void isDateValid(String day, String month, String year) throws FlooringMasteryDayIsNotValid {
+    public void isDateValid(String day, String month, String year) throws FlooringMasteryDayIsNotValidException {
        
         checkIfDayIsValid(day, month, year);
     }
     
-    private void checkIfYearIsValid(String year) throws FlooringMasteryYearIsNotValid{
+    private void checkIfYearIsValid(String year) throws FlooringMasteryYearIsNotValidException{
     
         Pattern p = Pattern.compile("[^0-9]");
         Matcher m = p.matcher(year);
@@ -349,12 +351,12 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         boolean notValid = m.find();
         
         if (notValid == true){
-            throw new FlooringMasteryYearIsNotValid("Years nust be represented by numberic values.");
+            throw new FlooringMasteryYearIsNotValidException("Years nust be represented by numberic values.");
         }
     }
 
     @Override
-    public void isYearValid(String year) throws FlooringMasteryYearIsNotValid {
+    public void isYearValid(String year) throws FlooringMasteryYearIsNotValidException {
         
         checkIfYearIsValid(year);
     }
@@ -370,5 +372,11 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
             throw new FlooringMasteryDateIsNotInTheFutureException ("We only accept order for future dates.");
         }
         
+    }
+
+    @Override
+    public void isAppointmentInTheFuture(String day, String month, String year) throws FlooringMasteryDateIsNotInTheFutureException {
+        
+        checkIfDateIsInTheFuture(day, month, year);
     }
  }

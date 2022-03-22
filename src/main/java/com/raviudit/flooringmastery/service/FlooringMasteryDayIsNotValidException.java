@@ -9,14 +9,13 @@ package com.raviudit.flooringmastery.service;
  *
  * @author raviu
  */
-public class FlooringMasteryYearIsNotValid extends Exception{
+public class FlooringMasteryDayIsNotValidException extends Exception{
     
-    public FlooringMasteryYearIsNotValid(String message){
+    public FlooringMasteryDayIsNotValidException(String message){
         super(message);
     }
     
-    public FlooringMasteryYearIsNotValid(String message, Throwable cause){
+    public FlooringMasteryDayIsNotValidException(String message, Throwable cause){
         super(message, cause);
     }
-    
 }
