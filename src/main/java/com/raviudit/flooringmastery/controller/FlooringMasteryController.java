@@ -395,6 +395,8 @@ public class FlooringMasteryController {
             }        
         } while (functionError);
         
+        
+        //GET ORDERNUMBER
         String ordernum = "0";
         
         do{
@@ -529,12 +531,79 @@ public class FlooringMasteryController {
     private void removeOrder() throws FlooringMasteryFilePersistanceException{
         
         String[] date = new String[3];
+        boolean functionError = false;
         
-        date[0] = view.getYear();
-        date[1] = view.getMonth();
-        date[2] = view.getDay();
+        //GET DATE
+        //date[0] = view.getYear();
+        //date[1] = view.getMonth();
+        //date[2] = view.getDay();
         
-        String ordernum = view.getOrderNumber();
+        do{
+            try{
+
+                date[0] = view.getYear();
+                service.isFieldBlank(date[0]);
+                service.isYearValid(date[0]);
+
+                functionError = false; 
+            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryYearIsNotValidException e){
+     
+                functionError = true;     
+                view.displayErrorMessage(e.getMessage());
+            }
+        } while (functionError);
+
+                
+        do{
+            try{
+                
+                date[1] = view.getMonth();
+                service.isFieldBlank(date[1]);
+                service.isMonthValid(date[1]);
+                
+                functionError = false;
+            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryMonthIsNotValidException e){
+               
+                functionError = true; 
+                view.displayErrorMessage(e.getMessage());  
+            }
+        } while (functionError);
+
+                
+        do{
+            try{
+        
+                date[2] = view.getDay();        
+                service.isFieldBlank(date[2]);        
+                service.isDateValid(date[2], date[1], date[0]);
+                                 
+                functionError = false;
+            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryDayIsNotValidException e){
+
+                functionError = true; 
+                view.displayErrorMessage(e.getMessage());
+            }        
+        } while (functionError);
+        
+        
+        //GET ORDERNUMBER
+        String ordernum = "0";
+        
+        do{
+            try{
+                
+                ordernum = view.getOrderNumber();
+                service.isFieldBlank(ordernum);
+                service.isOrderNumberValid(date[2], date[1], date[0], ordernum);
+                
+                functionError = false;
+            } catch(FlooringMasteryFieldIsBlankException | FlooringMasteryOrderNumberIsNotValidException e){
+                
+                functionError = true; 
+                view.displayErrorMessage(e.getMessage());
+            }
+        }while(functionError);
+        
         int orderNumber = Integer.parseInt(ordernum);
         
         view.displayOrder(service.getOrder(date[1], date[2], date[0], orderNumber));
@@ -568,6 +637,7 @@ public class FlooringMasteryController {
     private void exportAll() throws FlooringMasteryFilePersistanceException{
         
         service.exportOrderData();
+        view.confirmationMessage("Order Exported.");
     }
     
     private void unknownCommand(){
