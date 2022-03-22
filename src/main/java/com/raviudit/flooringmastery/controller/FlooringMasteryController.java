@@ -9,10 +9,13 @@ import com.raviudit.flooringmastery.dao.FlooringMasteryFilePersistanceException;
 import com.raviudit.flooringmastery.model.Order;
 import com.raviudit.flooringmastery.model.Product;
 import com.raviudit.flooringmastery.model.Taxes;
+import com.raviudit.flooringmastery.service.FlooringMasteryDateIsNotInTheFutureException;
 import com.raviudit.flooringmastery.service.FlooringMasteryDayIsNotValidException;
 import com.raviudit.flooringmastery.service.FlooringMasteryFieldIsBlankException;
 import com.raviudit.flooringmastery.service.FlooringMasteryMonthIsNotValidException;
+import com.raviudit.flooringmastery.service.FlooringMasteryNameIsNotValidException;
 import com.raviudit.flooringmastery.service.FlooringMasteryServiceLayer;
+import com.raviudit.flooringmastery.service.FlooringMasteryStateCodeDoesNotExistException;
 import com.raviudit.flooringmastery.service.FlooringMasteryYearIsNotValidException;
 import com.raviudit.flooringmastery.view.FlooringMasteryView;
 import java.util.List;
@@ -46,7 +49,6 @@ public class FlooringMasteryController {
                         case 1:
 
                             displayOrdersOnDate();
-
                             break;
                         case 2:
 
@@ -155,21 +157,117 @@ public class FlooringMasteryController {
         
     }
     
-    private void addOrder() throws FlooringMasteryFilePersistanceException{
+    private void addOrder() throws FlooringMasteryFilePersistanceException,
+                                   FlooringMasteryYearIsNotValidException,
+                                   FlooringMasteryMonthIsNotValidException,
+                                   FlooringMasteryDayIsNotValidException{
         
+        boolean functionError = false; 
+        
+        
+        //GET DATE
         String[] date = new String[3];
         
-        date[0] = view.getYear();
-        date[1] = view.getMonth();
-        date[2] = view.getDay();
+        //date[0] = view.getYear();
+        //date[1] = view.getMonth();
+        //date[2] = view.getDay();
+        
+        do{
+            try{
+                do{
+                    try{
+
+                        date[0] = view.getYear();
+                        service.isFieldBlank(date[0]);
+                        service.isYearValid(date[0]);
+
+                        functionError = false;
+
+                    } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryYearIsNotValidException e){
+
+                        functionError = true; 
+                        view.displayErrorMessage(e.getMessage());
+                    }
+                } while (functionError);
+
+                do{
+                    try{
+
+                        date[1] = view.getMonth();
+                        service.isFieldBlank(date[1]);
+                        service.isMonthValid(date[1]);
+
+                        functionError = false;
+
+                    } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryMonthIsNotValidException e){
+
+                        functionError = true; 
+                        view.displayErrorMessage(e.getMessage());
+                    }
+                } while (functionError);
+
+                do{
+                    try{
+
+                        date[2] = view.getDay();
+                        service.isFieldBlank(date[2]);
+                        service.isDateValid(date[2], date[1], date[0]);
+                        //service.isDateValid("01", "06", "2022");
+
+                        functionError = false;
+
+                    } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryDayIsNotValidException e){
+
+                        functionError = true; 
+                        view.displayErrorMessage(e.getMessage());
+                    }
+                    
+                } while (functionError);
+                
+                service.isAppointmentInTheFuture(date[2], date[1], date[0]);
+            } catch (FlooringMasteryDateIsNotInTheFutureException e){
+                
+                functionError = true; 
+                view.displayErrorMessage(e.getMessage());
+            } 
+        
+        }while (functionError);
         
         String[] orderInfo = new String[4];
         
-        orderInfo[0] = view.getCustomerName();
+        //GET CUSTOMER NAME
+        do{
+            try{
+                orderInfo[0] = view.getCustomerName();
+                service.isFieldBlank(orderInfo[0]);
+                service.isNameValid(orderInfo[0]);  
+
+                functionError = false;
+            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryNameIsNotValidException e){
+              
+                functionError = true; 
+                view.displayErrorMessage(e.getMessage());  
+            }
+        } while (functionError);
         
+        //GET STATE OF PURCHASE
         List<Taxes> stateList = service.getTaxes();
         view.displayTaxes(stateList);
-        orderInfo[1] = view.getState();
+        
+        do{
+            try{
+                orderInfo[1] = view.getState();
+                service.isFieldBlank(orderInfo[1]);
+                service.areServicesAvailableThere(orderInfo[1]);
+                
+                functionError = false; 
+            } catch( FlooringMasteryFieldIsBlankException | FlooringMasteryStateCodeDoesNotExistException e){
+                
+                functionError = true; 
+                view.displayErrorMessage(e.getMessage());  
+            }
+        } while (functionError);
+        
         
         List<Product> productList = service.getProducts();
         view.displayProducts(productList);

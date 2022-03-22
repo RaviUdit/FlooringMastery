@@ -1,0 +1,2 @@
+OrderNumber:&:CustomerName:&:State:&:TaxRate:&:ProductType:&:Area:&:CostPerSquareFoot:&:LaborCostPerSquareFoot:&:MaterialCost:&:LaborCost:&:Tax:&:Total
+1:&:Ravi Udit:&:HI:&:5.5:&:Tile:&:120:&:3.50:&:4.15:&:420.00:&:498.00:&:55.08:&:973.08
