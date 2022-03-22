@@ -9,11 +9,13 @@ import com.raviudit.flooringmastery.dao.FlooringMasteryFilePersistanceException;
 import com.raviudit.flooringmastery.model.Order;
 import com.raviudit.flooringmastery.model.Product;
 import com.raviudit.flooringmastery.model.Taxes;
+import com.raviudit.flooringmastery.service.FlooringMasteryAreaIsNotValidException;
 import com.raviudit.flooringmastery.service.FlooringMasteryDateIsNotInTheFutureException;
 import com.raviudit.flooringmastery.service.FlooringMasteryDayIsNotValidException;
 import com.raviudit.flooringmastery.service.FlooringMasteryFieldIsBlankException;
 import com.raviudit.flooringmastery.service.FlooringMasteryMonthIsNotValidException;
 import com.raviudit.flooringmastery.service.FlooringMasteryNameIsNotValidException;
+import com.raviudit.flooringmastery.service.FlooringMasteryProductDoesNotExistException;
 import com.raviudit.flooringmastery.service.FlooringMasteryServiceLayer;
 import com.raviudit.flooringmastery.service.FlooringMasteryStateCodeDoesNotExistException;
 import com.raviudit.flooringmastery.service.FlooringMasteryYearIsNotValidException;
@@ -268,12 +270,39 @@ public class FlooringMasteryController {
             }
         } while (functionError);
         
-        
+        //GET PRODUCT
         List<Product> productList = service.getProducts();
         view.displayProducts(productList);
-        orderInfo[2] = view.getProductType();
         
-        orderInfo[3] = view.getArea();
+        do{
+            try{
+                orderInfo[2] = view.getProductType();
+                service.isFieldBlank(orderInfo[2]);
+                service.isProductAvailable(orderInfo[2]);
+                
+                functionError = false;
+            } catch( FlooringMasteryFieldIsBlankException | FlooringMasteryProductDoesNotExistException e){
+                
+                functionError = true; 
+                view.displayErrorMessage(e.getMessage());  
+            }
+        } while (functionError);
+        
+        // GET AREA
+        do{
+            try{
+                orderInfo[3] = view.getArea();
+                service.isFieldBlank(orderInfo[3]);
+                service.isAreaValid(orderInfo[3]);
+                
+                functionError = false;
+            } catch( FlooringMasteryFieldIsBlankException | FlooringMasteryAreaIsNotValidException e){
+                
+                functionError = true; 
+                view.displayErrorMessage(e.getMessage());  
+            }
+        } while (functionError);
+        
         
         Order newOrder = new Order(1);
         

@@ -366,12 +366,15 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         LocalDate ld = LocalDate.now();
         String date = year + "-" + month + "-" + day;
         
+        //String date = "2022-07-13";
         //LocalDate compareDate = LocalDate.parse(month + "/" + day + "/" + year, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
         LocalDate compareDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("uuuu-M-d"));
         
-        boolean pastDate = ld.isBefore(compareDate);
+        boolean pastDate = false;
         
-        if (pastDate = true){
+        pastDate = ld.isBefore(compareDate);
+        
+        if (!pastDate){
             throw new FlooringMasteryDateIsNotInTheFutureException ("We only accept orders for future dates.");
         }
         

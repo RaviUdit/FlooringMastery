@@ -71,10 +71,10 @@ public class FlooringMasteryView {
     
     public void displayOrder(Order order){
         
-        io.print("Order Number, Customer Name, State, Product, Total Area, Material Cost, Labor Cost, Taxes, Total");
+        io.print("Customer Name, State, Product, Total Area, Material Cost, Labor Cost, Taxes, Total");
         
-        String orderInfo = String.format("%s : %s %s %s %s $%s $%s $%s $%s", 
-            String.valueOf(order.getOrderNumber()), 
+        String orderInfo = String.format("%s %s %s %s $%s $%s $%s $%s", 
+           // String.valueOf(order.getOrderNumber()), 
             order.getCustomerName(),
             order.getState(),
             order.getProductType(),
