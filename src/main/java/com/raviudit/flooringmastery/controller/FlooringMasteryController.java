@@ -124,61 +124,6 @@ public class FlooringMasteryController {
         
         String[] date = getDate();
         
-//        boolean functionError = false;
-//        
-//        LocalDate orderDate = view.getDate();
-//        orderDate.toString();
-//        
-//        do{
-//            try{
-//                
-//                date[0] = view.getYear();
-//                service.isFieldBlank(date[0]);
-//                service.isYearValid(date[0]);
-//                
-//                functionError = false;
-//                
-//            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryYearIsNotValidException e){
-//                
-//                functionError = true; 
-//                view.displayErrorMessage(e.getMessage());
-//            }
-//        } while (functionError);
-//        
-//        do{
-//            try{
-//                
-//                date[1] = view.getMonth();
-//                service.isFieldBlank(date[1]);
-//                service.isMonthValid(date[1]);
-//                
-//                functionError = false;
-//                
-//            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryMonthIsNotValidException e){
-//                
-//                functionError = true; 
-//                view.displayErrorMessage(e.getMessage());
-//            }
-//        } while (functionError);
-//        
-//        do{
-//            try{
-//                
-//                date[2] = view.getDay();
-//                service.isFieldBlank(date[2]);
-//                service.isDateValid(date[2], date[1], date[0]);
-//                //service.isDateValid("01", "06", "2022");
-//                
-//                functionError = false;
-//                
-//            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryDayIsNotValidException e){
-//                
-//                functionError = true; 
-//                view.displayErrorMessage(e.getMessage());
-//            }
-//        } while (functionError);
-        
-        
         List<Order> orderList = service.getAllOrdersOnDate(date[0], date[1], date[2]);
         view.displayOrdersOnDate(orderList);
         
@@ -207,73 +152,6 @@ public class FlooringMasteryController {
             }
         }while (functionError);
 
-        
-        
-        //date[0] = view.getYear();
-        //date[1] = view.getMonth();
-        //date[2] = view.getDay();
-//        
-//        do{
-//            try{
-//                do{
-//                    try{
-//
-//                        date[0] = view.getYear();
-//                        service.isFieldBlank(date[0]);
-//                        service.isYearValid(date[0]);
-//
-//                        functionError = false;
-//
-//                    } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryYearIsNotValidException e){
-//
-//                        functionError = true; 
-//                        view.displayErrorMessage(e.getMessage());
-//                    }
-//                } while (functionError);
-//
-//                do{
-//                    try{
-//
-//                        date[1] = view.getMonth();
-//                        service.isFieldBlank(date[1]);
-//                        service.isMonthValid(date[1]);
-//
-//                        functionError = false;
-//
-//                    } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryMonthIsNotValidException e){
-//
-//                        functionError = true; 
-//                        view.displayErrorMessage(e.getMessage());
-//                    }
-//                } while (functionError);
-//
-//                do{
-//                    try{
-//
-//                        date[2] = view.getDay();
-//                        service.isFieldBlank(date[2]);
-//                        service.isDateValid(date[2], date[1], date[0]);
-//                        //service.isDateValid("01", "06", "2022");
-//
-//                        functionError = false;
-//
-//                    } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryDayIsNotValidException e){
-//
-//                        functionError = true; 
-//                        view.displayErrorMessage(e.getMessage());
-//                    }
-//                    
-//                } while (functionError);
-//                
-//                service.isAppointmentInTheFuture(date[2], date[1], date[0]);
-//            } catch (FlooringMasteryDateIsNotInTheFutureException e){
-//                
-//                functionError = true; 
-//                view.displayErrorMessage(e.getMessage());
-//            } 
-//        
-//        }while (functionError);
-        
         String[] orderInfo = new String[4];
         
         //GET CUSTOMER NAME
@@ -382,57 +260,7 @@ public class FlooringMasteryController {
         
         String[] date = getDate();
         
-        //date[0] = view.getYear();
-        //date[1] = view.getMonth();
-        //date[2] = view.getDay();
-//        
-//        do{
-//            try{
-//
-//                date[0] = view.getYear();
-//                service.isFieldBlank(date[0]);
-//                service.isYearValid(date[0]);
-//
-//                functionError = false; 
-//            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryYearIsNotValidException e){
-//     
-//                functionError = true;     
-//                view.displayErrorMessage(e.getMessage());
-//            }
-//        } while (functionError);
-//
-//                
-//        do{
-//            try{
-//                
-//                date[1] = view.getMonth();
-//                service.isFieldBlank(date[1]);
-//                service.isMonthValid(date[1]);
-//                
-//                functionError = false;
-//            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryMonthIsNotValidException e){
-//               
-//                functionError = true; 
-//                view.displayErrorMessage(e.getMessage());  
-//            }
-//        } while (functionError);
-//
-//                
-//        do{
-//            try{
-//        
-//                date[2] = view.getDay();        
-//                service.isFieldBlank(date[2]);        
-//                service.isDateValid(date[2], date[1], date[0]);
-//                        //service.isDateValid("01", "06", "2022");         
-//                functionError = false;
-//            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryDayIsNotValidException e){
-//
-//                functionError = true; 
-//                view.displayErrorMessage(e.getMessage());
-//            }        
-//        } while (functionError);
-        
+
         
         //GET ORDERNUMBER
         String ordernum = "0";
@@ -571,59 +399,7 @@ public class FlooringMasteryController {
         String[] date = getDate();
         boolean functionError = false;
         
-        //GET DATE
-        //date[0] = view.getYear();
-        //date[1] = view.getMonth();
-        //date[2] = view.getDay();
-        
-//        do{
-//            try{
-//
-//                date[0] = view.getYear();
-//                service.isFieldBlank(date[0]);
-//                service.isYearValid(date[0]);
-//
-//                functionError = false; 
-//            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryYearIsNotValidException e){
-//     
-//                functionError = true;     
-//                view.displayErrorMessage(e.getMessage());
-//            }
-//        } while (functionError);
-//
-//                
-//        do{
-//            try{
-//                
-//                date[1] = view.getMonth();
-//                service.isFieldBlank(date[1]);
-//                service.isMonthValid(date[1]);
-//                
-//                functionError = false;
-//            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryMonthIsNotValidException e){
-//               
-//                functionError = true; 
-//                view.displayErrorMessage(e.getMessage());  
-//            }
-//        } while (functionError);
-//
-//                
-//        do{
-//            try{
-//        
-//                date[2] = view.getDay();        
-//                service.isFieldBlank(date[2]);        
-//                service.isDateValid(date[2], date[1], date[0]);
-//                                 
-//                functionError = false;
-//            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryDayIsNotValidException e){
-//
-//                functionError = true; 
-//                view.displayErrorMessage(e.getMessage());
-//            }        
-//        } while (functionError);
-//        
-//        
+
         //GET ORDERNUMBER
         String ordernum = "0";
         

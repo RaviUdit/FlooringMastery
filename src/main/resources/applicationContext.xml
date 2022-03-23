@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/mvc
+          http://www.springframework.org/schema/mvc/spring-mvc.xsd
+          http://www.springframework.org/schema/tx
+          http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+          http://www.springframework.org/schema/context
+          http://www.springframework.org/schema/context/spring-context.xsd
+          http://www.springframework.org/schema/aop  
+          http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+
+    <!-- Bean definitions go here -->
+    
+    <!--    Setting Up View-->
+    <bean id = "myIO" class = "com.raviudit.flooringmastery.view.UserIOConsoleImpl" />
+    <bean id = "myView" class = "com.raviudit.flooringmastery.view.FlooringMasteryView">
+        <constructor-arg ref = "myIO" />
+    </bean>
+    
+    <!--    Setting Up Service-->
+    <bean id = "myDAO" class = "com.raviudit.flooringmastery.dao.FlooringMasteryDAOFileImpl" />
+    <bean id = "myService" class = "com.raviudit.flooringmastery.service.FlooringMasteryServiceLayerImpl">
+        <constructor-arg ref = "myDAO" />
+    </bean>
+   
+   <!--     Setting Up Controller-->
+   <bean id = "controller" class = "com.raviudit.flooringmastery.controller.FlooringMasteryController">
+        <constructor-arg ref = "myView" />
+        <constructor-arg ref = "myService" />
+   </bean>     
+   
+</beans>
+
+
+
+
+<!--<root>
+    
+</root>-->

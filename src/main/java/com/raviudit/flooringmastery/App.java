@@ -6,13 +6,8 @@
 package com.raviudit.flooringmastery;
 
 import com.raviudit.flooringmastery.controller.FlooringMasteryController;
-import com.raviudit.flooringmastery.dao.FlooringMasteryDAO;
-import com.raviudit.flooringmastery.dao.FlooringMasteryDAOFileImpl;
-import com.raviudit.flooringmastery.service.FlooringMasteryServiceLayer;
-import com.raviudit.flooringmastery.service.FlooringMasteryServiceLayerImpl;
-import com.raviudit.flooringmastery.view.FlooringMasteryView;
-import com.raviudit.flooringmastery.view.UserIO;
-import com.raviudit.flooringmastery.view.UserIOConsoleImpl;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
@@ -31,15 +26,19 @@ public class App {
       
     public static void main(String[] args) {
       
-        UserIO myIO = new UserIOConsoleImpl();
-        FlooringMasteryView myView = new FlooringMasteryView(myIO);
-        
-        FlooringMasteryDAO myDAO = new FlooringMasteryDAOFileImpl();
-        FlooringMasteryServiceLayer myService = new FlooringMasteryServiceLayerImpl(myDAO);
-        
-        FlooringMasteryController controller = new FlooringMasteryController(myView, myService);
-        controller.run();
-        
+//        UserIO myIO = new UserIOConsoleImpl();
+//        FlooringMasteryView myView = new FlooringMasteryView(myIO);
+//        
+//        FlooringMasteryDAO myDAO = new FlooringMasteryDAOFileImpl();
+//        FlooringMasteryServiceLayer myService = new FlooringMasteryServiceLayerImpl(myDAO);
+//        
+//        FlooringMasteryController controller = new FlooringMasteryController(myView, myService);
+//        controller.run();
+
+            ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+            
+            FlooringMasteryController controller = ctx.getBean("controller", FlooringMasteryController.class);
+            controller.run();
     }
     
 }
