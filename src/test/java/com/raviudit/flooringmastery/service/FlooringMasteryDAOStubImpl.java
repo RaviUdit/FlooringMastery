@@ -34,7 +34,7 @@ public class FlooringMasteryDAOStubImpl implements FlooringMasteryDAO{
         BigDecimal tax = new BigDecimal("600");
         BigDecimal total = new BigDecimal("700");
         
-        Order testOrder = new Order(1);
+        testOrder = new Order(1);
         testOrder.setCustomerName("Test Customer");
         testOrder.setState("GR");
         testOrder.setTaxRate(taxRate);
@@ -47,11 +47,11 @@ public class FlooringMasteryDAOStubImpl implements FlooringMasteryDAO{
         testOrder.setTax(tax);
         testOrder.setTotal(total);
         
-        Taxes testTaxes = new Taxes("CA");
+        testTaxes = new Taxes("CA");
         testTaxes.setStateName("Canada");
         testTaxes.setTaxRate(taxRate);
         
-        Product testProduct = new Product("Wood");
+        testProduct = new Product("Wood");
         testProduct.setCostPerSquareFoot(cpsFoot);
         testProduct.setLaborCostPerSquareFoot(lcpsFoot);
     }

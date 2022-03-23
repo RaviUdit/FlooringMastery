@@ -36,6 +36,7 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
     
     @Override
     public List<Taxes> getTaxes() throws FlooringMasteryFilePersistanceException {
+        
         return dao.getTaxes();
     }
 

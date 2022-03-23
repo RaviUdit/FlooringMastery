@@ -47,4 +47,17 @@ public class FlooringMasteryServiceLayerImplTest {
 //        fail("The test case is a prototype.");
 //    }
     
+    @Test
+    public void testCheckIfStateExists() throws Exception{
+        
+        //Arrange
+        
+        String testString = "KN";
+        try{
+            service.areServicesAvailableThere(testString);
+            fail(" Expected exception was not thrown");
+        } catch(FlooringMasteryStateCodeDoesNotExistException e){
+            return;
+        }
+    }
 }
