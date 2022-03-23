@@ -21,6 +21,8 @@ import com.raviudit.flooringmastery.service.FlooringMasteryServiceLayer;
 import com.raviudit.flooringmastery.service.FlooringMasteryStateCodeDoesNotExistException;
 import com.raviudit.flooringmastery.service.FlooringMasteryYearIsNotValidException;
 import com.raviudit.flooringmastery.view.FlooringMasteryView;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -41,6 +43,25 @@ public class FlooringMasteryController {
         
         boolean menuOpen = true;
         int menuSelection = 0;
+        
+//        getDate();
+        
+//        LocalDate testDate = view.getDate();
+//        //LocalDate testDate2 = null; 
+//        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+//        //testDate2 = LocalDate.parse(testDate.toString(), formatter);
+//        System.out.println(testDate.toString());
+//        String month = String.valueOf(testDate.getMonthValue());
+//        if(month.length() < 2){
+//            month = "0" + month;
+//        }
+//        String day = String.valueOf(testDate.getDayOfMonth());
+//        if(day.length() < 2){
+//            day = "0" + day;
+//        }
+//        String year = String.valueOf(testDate.getYear());
+//        
+//        System.out.println( month + day + year);
         
         do{
             try{
@@ -101,61 +122,64 @@ public class FlooringMasteryController {
                                               FlooringMasteryMonthIsNotValidException,
                                               FlooringMasteryDayIsNotValidException{
         
-        String[] date = new String[3];
+        String[] date = getDate();
         
-        boolean functionError = false;
+//        boolean functionError = false;
+//        
+//        LocalDate orderDate = view.getDate();
+//        orderDate.toString();
+//        
+//        do{
+//            try{
+//                
+//                date[0] = view.getYear();
+//                service.isFieldBlank(date[0]);
+//                service.isYearValid(date[0]);
+//                
+//                functionError = false;
+//                
+//            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryYearIsNotValidException e){
+//                
+//                functionError = true; 
+//                view.displayErrorMessage(e.getMessage());
+//            }
+//        } while (functionError);
+//        
+//        do{
+//            try{
+//                
+//                date[1] = view.getMonth();
+//                service.isFieldBlank(date[1]);
+//                service.isMonthValid(date[1]);
+//                
+//                functionError = false;
+//                
+//            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryMonthIsNotValidException e){
+//                
+//                functionError = true; 
+//                view.displayErrorMessage(e.getMessage());
+//            }
+//        } while (functionError);
+//        
+//        do{
+//            try{
+//                
+//                date[2] = view.getDay();
+//                service.isFieldBlank(date[2]);
+//                service.isDateValid(date[2], date[1], date[0]);
+//                //service.isDateValid("01", "06", "2022");
+//                
+//                functionError = false;
+//                
+//            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryDayIsNotValidException e){
+//                
+//                functionError = true; 
+//                view.displayErrorMessage(e.getMessage());
+//            }
+//        } while (functionError);
         
-        do{
-            try{
-                
-                date[0] = view.getYear();
-                service.isFieldBlank(date[0]);
-                service.isYearValid(date[0]);
-                
-                functionError = false;
-                
-            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryYearIsNotValidException e){
-                
-                functionError = true; 
-                view.displayErrorMessage(e.getMessage());
-            }
-        } while (functionError);
         
-        do{
-            try{
-                
-                date[1] = view.getMonth();
-                service.isFieldBlank(date[1]);
-                service.isMonthValid(date[1]);
-                
-                functionError = false;
-                
-            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryMonthIsNotValidException e){
-                
-                functionError = true; 
-                view.displayErrorMessage(e.getMessage());
-            }
-        } while (functionError);
-        
-        do{
-            try{
-                
-                date[2] = view.getDay();
-                service.isFieldBlank(date[2]);
-                service.isDateValid(date[2], date[1], date[0]);
-                //service.isDateValid("01", "06", "2022");
-                
-                functionError = false;
-                
-            } catch (FlooringMasteryFieldIsBlankException | FlooringMasteryDayIsNotValidException e){
-                
-                functionError = true; 
-                view.displayErrorMessage(e.getMessage());
-            }
-        } while (functionError);
-        
-        
-        List<Order> orderList = service.getAllOrdersOnDate(date[1], date[2], date[0]);
+        List<Order> orderList = service.getAllOrdersOnDate(date[0], date[1], date[2]);
         view.displayOrdersOnDate(orderList);
         
     }
@@ -642,6 +666,34 @@ public class FlooringMasteryController {
     
     private void unknownCommand(){
         view.displayUnknownCommandBanner();
+    }
+    
+    private String[] getDate(){
+        
+        String date[] = new String[3];
+        
+        LocalDate testDate = view.getDate();
+        //LocalDate testDate2 = null; 
+        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        //testDate2 = LocalDate.parse(testDate.toString(), formatter);
+        System.out.println(testDate.toString());
+        String month = String.valueOf(testDate.getMonthValue());
+        if(month.length() < 2){
+            month = "0" + month;
+        }
+        String day = String.valueOf(testDate.getDayOfMonth());
+        if(day.length() < 2){
+            day = "0" + day;
+        }
+        String year = String.valueOf(testDate.getYear());
+        
+        date[0] = month;
+        date[1] = day;
+        date[2] = year;
+        
+        //System.out.println( date[0] + date[1] + date[2]);
+        
+        return date;
     }
     
 }

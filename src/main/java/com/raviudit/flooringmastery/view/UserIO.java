@@ -5,6 +5,8 @@
  */
 package com.raviudit.flooringmastery.view;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author raviu
@@ -35,5 +37,7 @@ public interface UserIO {
     long readLong(String prompt);
 
     long readLong(String prompt, long min, long max);
+    
+    LocalDate readLocalDate(String prompt);
  
 }

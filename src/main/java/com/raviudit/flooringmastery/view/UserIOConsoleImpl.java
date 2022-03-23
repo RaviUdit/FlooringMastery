@@ -15,6 +15,9 @@ package com.raviudit.flooringmastery.view;
  * @author raviu
  */
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 
@@ -199,5 +202,43 @@ public class UserIOConsoleImpl implements UserIO{
         return result;
     }
 
+//    public LocalDate readLocalDate(String prompt) {
+//        boolean invalidInput = true;
+//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+//        LocalDate date = null;
+//        while (invalidInput) {
+//            try {
+//                String inputValue = this.readString(prompt);
+//                date = LocalDate.parse(inputValue, dateTimeFormatter);
+//                invalidInput = false;
+//            } catch (DateTimeParseException ex) {
+//                this.print("Please Enter Valid Date: " + ex.getMessage());
+//            }
+//        }
+//        //While loop will keep going until a valid date is inputted as mm/dd/yyyy
+//        return date;
+//    }
+
+    @Override
+    public LocalDate readLocalDate(String prompt) {
+        
+        boolean validInput = true;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate date = null;
+        
+        do{
+            try{
+                String input = this.readString(prompt);
+                date = LocalDate.parse(input, formatter);
+                validInput = true; 
+            } catch (DateTimeParseException x) {
+             
+                this.print("We require a valid date: " + x.getMessage() );
+                validInput = false;
+            }
+        }while (!validInput);
+        
+        return date;
+    }
     
 }

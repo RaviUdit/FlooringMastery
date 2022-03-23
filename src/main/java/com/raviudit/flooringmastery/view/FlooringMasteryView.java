@@ -8,6 +8,8 @@ package com.raviudit.flooringmastery.view;
 import com.raviudit.flooringmastery.model.Order;
 import com.raviudit.flooringmastery.model.Product;
 import com.raviudit.flooringmastery.model.Taxes;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -17,6 +19,7 @@ import java.util.List;
 public class FlooringMasteryView {
     
     private UserIO io; 
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     
     public FlooringMasteryView(UserIO io){
         this.io = io; 
@@ -134,7 +137,17 @@ public class FlooringMasteryView {
     }
     
     public String getYear(){
+        
         return io.readString("Please enter the Year of the requested order [YYYY].");
+    }
+    
+    public LocalDate getDate(){
+        
+       // LocalDate ld = null; 
+       // ld = LocalDate.parse(io.readLocalDate("Enter the date of the order [MM/DD/YYYY]").toString(), formatter);
+       //  return ld;
+       
+       return io.readLocalDate("Enter the date of the order [MM/DD/YYYY]");
     }
     
     public String getCustomerName(){
