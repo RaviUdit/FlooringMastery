@@ -68,33 +68,6 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
                           Order newOrder) throws FlooringMasteryFilePersistanceException{
         
         String orderString = compileDate(month, day, year);
-//        
-//        Taxes orderTaxes = getTaxesByState(stateName);
-//        Product orderProduct = getProductByName(productType);
-//        
-//        BigDecimal orderArea = new BigDecimal(area);
-//        BigDecimal materialCost = orderProduct.getCostPerSquareFoot().multiply(orderArea);
-//        BigDecimal laborCost = orderProduct.getLaborCostPerSquareFoot().multiply(orderArea);
-//        BigDecimal costBeforeTax = materialCost.add(laborCost);
-//        
-//        BigDecimal taxDivisor = new BigDecimal("100");
-//        BigDecimal orderTaxRate = orderTaxes.getTaxRate().divide( taxDivisor, 2, RoundingMode.HALF_UP);
-//        BigDecimal orderTax = costBeforeTax.multiply(orderTaxRate);
-//        
-//        BigDecimal orderTotal = costBeforeTax.add(orderTax);
-//        
-//        Order newOrder = new Order(1);
-//        newOrder.setCustomerName(customerName);
-//        newOrder.setState(stateName);
-//        newOrder.setTaxRate(orderTaxes.getTaxRate());
-//        newOrder.setProductType(productType);
-//        newOrder.setArea(orderArea);
-//        newOrder.setCostPerSquareFoot(orderProduct.getCostPerSquareFoot());
-//        newOrder.setLaborCostPerSquareFoot(orderProduct.getLaborCostPerSquareFoot());
-//        newOrder.setMaterialCost(materialCost);
-//        newOrder.setLaborCost(laborCost);
-//        newOrder.setTax(orderTax.setScale(2, RoundingMode.HALF_UP));
-//        newOrder.setTotal(orderTotal.setScale(2, RoundingMode.HALF_UP));
         dao.addOrder(orderString, newOrder);
         
         return newOrder;

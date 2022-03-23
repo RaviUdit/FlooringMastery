@@ -1,0 +1,3 @@
+OrderNumber:&:CustomerName:&:State:&:TaxRate:&:ProductType:&:Area:&:CostPerSquareFoot:&:LaborCostPerSquareFoot:&:MaterialCost:&:LaborCost:&:Tax:&:Total
+1:&:Test Customer:&:GR:&:5.5:&:Oak:&:100:&:200:&:300:&:400:&:500:&:600:&:700
+2:&:Test Customer 2:&:RD:&:5.5:&:Teak:&:200:&:300:&:400:&:500:&:600:&:700:&:800
