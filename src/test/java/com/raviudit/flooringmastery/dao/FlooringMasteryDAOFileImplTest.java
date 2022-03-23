@@ -6,6 +6,7 @@
 package com.raviudit.flooringmastery.dao;
 
 import com.raviudit.flooringmastery.model.Order;
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -41,7 +42,7 @@ public class FlooringMasteryDAOFileImplTest {
     public void tearDown() {
     }
 
-//    @Test
+    @Test
     public void testAddGetOrder() throws Exception{
         
         BigDecimal taxRate = new BigDecimal("5.5");
@@ -68,14 +69,17 @@ public class FlooringMasteryDAOFileImplTest {
         
         
         testDao.addOrder("testOrders/testOrders.txt", testOrder);
+        File f = new File("testOrders/testOrders.txt");
         
         //Order retrievedOrder = testDao.getOrder("testOrders/testOrders.txt", 1);
         Order retrievedOrder = testDao.getAllOrdersOnDate("testOrders/testOrders.txt").get(testDao.getAllOrdersOnDate("testOrders/testOrders.txt").size()-1);
         
         assertEquals(testOrder.getOrderNumber(), retrievedOrder.getOrderNumber(), "Checking Order Number");
+        
+        f.deleteOnExit();
     }
     
-//    @Test
+    @Test
     public void testAddGetAllOrders() throws Exception{
         
         BigDecimal taxRate = new BigDecimal("5.5");
@@ -116,6 +120,7 @@ public class FlooringMasteryDAOFileImplTest {
         testOrder2.setTotal(total.add(area));
         
         testDao.addOrder("testOrders/testOrders2.txt", testOrder2);
+        File f = new File("testOrders/testOrders2.txt");
         
         List<Order> allOrders = testDao.getAllOrdersOnDate("testOrders/testOrders2.txt");
         
@@ -125,9 +130,10 @@ public class FlooringMasteryDAOFileImplTest {
         assertTrue(allOrders.contains(testOrder), "The list contains testOrder.");
         assertTrue(allOrders.contains(testOrder2), "The list contains testOrder2.");
         
+        f.deleteOnExit();
     }
     
-//    @Test
+    @Test
     public void testRemoveOrder() throws Exception{
         
         BigDecimal taxRate = new BigDecimal("5.5");
@@ -152,6 +158,7 @@ public class FlooringMasteryDAOFileImplTest {
         testOrder.setTax(tax);
         testOrder.setTotal(total);
         
+        File f = new File("testOrders/testOrders3.txt");
         testDao.addOrder("testOrders/testOrders3.txt", testOrder);
         
         Order testOrder2 = new Order(2);
@@ -177,6 +184,8 @@ public class FlooringMasteryDAOFileImplTest {
         
         assertNotNull(allOrders, "The list may not be null.");
         assertEquals(1, allOrders.size(), "List should have 1 element.");
+        
+        f.deleteOnExit();
     }
     
     
