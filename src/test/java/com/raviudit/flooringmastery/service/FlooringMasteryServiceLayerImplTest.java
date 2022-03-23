@@ -60,4 +60,54 @@ public class FlooringMasteryServiceLayerImplTest {
             return;
         }
     }
+    
+    @Test
+    public void testCheckIfProductExists() throws Exception{
+        
+        //Arrange
+        
+        String testString = "Tile";
+        try{
+            service.isProductAvailable(testString);
+            fail(" Expected exception was not thrown");
+        } catch(FlooringMasteryProductDoesNotExistException e){
+            return;
+        }
+    }
+    
+    @Test
+    public void testCheckIfFieldIsBlank(){
+      
+        String testString = "";
+        try{
+            service.isFieldBlank(testString);
+            fail(" Expected exception was not thrown");
+        } catch(FlooringMasteryFieldIsBlankException e){
+            return;
+        }
+    }
+    
+    @Test
+    public void testCheckIfAreaIsValidLowNumber() throws Exception{
+        
+        String testString = "50";
+        try{
+            service.isAreaValid(testString);
+            fail(" Expected exception was not thrown");
+        } catch(FlooringMasteryAreaIsNotValidException e){
+            return;
+        }
+    }
+    
+    @Test
+    public void testCheckIfAreaIsNonNumber() throws Exception{
+        
+        String testString = "q";
+        try{
+            service.isAreaValid(testString);
+            fail(" Expected exception was not thrown");
+        } catch(FlooringMasteryAreaIsNotValidException e){
+            return;
+        }
+    }
 }
