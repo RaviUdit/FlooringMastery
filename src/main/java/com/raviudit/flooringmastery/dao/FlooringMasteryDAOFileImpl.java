@@ -37,15 +37,31 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
     
     //File Code
     public static final String DELIMITER = ":&:";
+        
+    public final String ORDERS_FOLDER;
+    public final String TAXES_LOCATION; 
+    public final String PRODUCT_LOCATION;
+    public final String EXPORT_LOCATION;
+
+    public FlooringMasteryDAOFileImpl(){
+        
+        ORDERS_FOLDER = "Orders";
+        TAXES_LOCATION = "Data/Taxes.txt";
+        PRODUCT_LOCATION = "Data/Products.txt";
+        EXPORT_LOCATION = "Backup/DataExport.txt";
+    }
     
+    //USED FOR TESTING
+    public FlooringMasteryDAOFileImpl(String ordersFolder, String taxLocation, String productLocation, String exportLocation){
+        
+        ORDERS_FOLDER = ordersFolder;
+        TAXES_LOCATION = taxLocation;
+        PRODUCT_LOCATION = productLocation;
+        EXPORT_LOCATION = exportLocation;
+    }
     
-    public static final String ORDERS_FOLDER = "Orders";
-    public static final String TAXES_LOCATION = "Data/Taxes.txt";
-    public static final String PRODUCT_LOCATION = "Data/Products.txt";
 
     //FUNCTIONS
-    
-    
     @Override
     public List<Taxes> getTaxes() throws FlooringMasteryFilePersistanceException {
         
@@ -346,7 +362,7 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         //String exportDate = "Backup/Export_" + timeStamp.toString();
         
         try{
-            out = new PrintWriter(new FileWriter("Backup/DataExport.txt"));
+            out = new PrintWriter(new FileWriter(EXPORT_LOCATION));
         }catch(IOException e){
             throw new FlooringMasteryFilePersistanceException("Could not create File", e);
         }
