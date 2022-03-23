@@ -110,4 +110,45 @@ public class FlooringMasteryServiceLayerImplTest {
             return;
         }
     }
+    
+    @Test
+    public void testCheckIfNameIsValid() throws Exception{
+        
+        String testString = "[]";
+        try{
+            service.isNameValid(testString);
+            fail(" Expected exception was not thrown");
+        }catch(FlooringMasteryNameIsNotValidException e){
+            return;
+        }
+    }
+    
+    @Test
+    public void testCheckIfDateIsInTheFuture() throws Exception{
+        
+        String testStringDay = "01";
+        String testStringMonth = "01";
+        String testStringYear = "1995";
+        try{
+            service.isAppointmentInTheFuture(testStringDay, testStringMonth, testStringYear);
+            fail(" Expected exception was not thrown");
+        }catch(FlooringMasteryDateIsNotInTheFutureException e){
+            return;
+        }
+    }
+    
+    @Test
+    public void testCheckIsOrderNumberValid() throws Exception{
+        
+        String testStringDay = "01";
+        String testStringMonth = "01";
+        String testStringYear = "1995";
+        String testOrderNumber = "10";
+        try{
+            service.isOrderNumberValid(testStringDay, testStringMonth, testStringYear, testOrderNumber);
+            fail(" Expected exception was not thrown");
+        }catch(FlooringMasteryOrderNumberIsNotValidException e){
+            return;
+        }
+    }
 }
