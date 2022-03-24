@@ -14,6 +14,7 @@ import java.util.Objects;
  */
 public class Order {
 
+    //TEST CODE
     @Override
     public int hashCode() {
         int hash = 7;
@@ -88,6 +89,11 @@ public class Order {
         return "Order{" + "orderNumber=" + orderNumber + ", customerName=" + customerName + ", state=" + state + ", taxRate=" + taxRate + ", productType=" + productType + ", area=" + area + ", costPerSquareFoot=" + costPerSquareFoot + ", laborCostPerSquareFoot=" + laborCostPerSquareFoot + ", materialCost=" + materialCost + ", laborCost=" + laborCost + ", tax=" + tax + ", total=" + total + '}';
     }
     
+/*****
+ * Type: Object Definition: Order
+ * 
+ * 
+ */
     
     //Functional Code
     

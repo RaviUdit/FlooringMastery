@@ -11,6 +11,11 @@ import java.math.BigDecimal;
  *
  * @author raviu
  */
+/*****
+ * Type: Object Definition: Taxes
+ * 
+ * 
+ */
 public class Taxes {
     
     private String stateAbbr;

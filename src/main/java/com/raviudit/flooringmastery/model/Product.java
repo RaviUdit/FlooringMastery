@@ -11,6 +11,12 @@ import java.math.BigDecimal;
  *
  * @author raviu
  */
+
+/*****
+ * Type: Object Definition: Taxes
+ * 
+ * 
+ */
 public class Product {
     
     private String productType;
