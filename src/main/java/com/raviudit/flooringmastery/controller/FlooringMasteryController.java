@@ -39,29 +39,18 @@ public class FlooringMasteryController {
         this.service = service;
     }
     
+    /*
+    ** Function Name: run
+    ** Return Type: Void
+    ** Purpose: Captures the users's input from the displayed options generated 
+        by getMenuSelection(), then funnels the user into the appropriate 
+        function.
+    */
+    
     public void run(){
         
         boolean menuOpen = true;
         int menuSelection = 0;
-        
-//        getDate();
-        
-//        LocalDate testDate = view.getDate();
-//        //LocalDate testDate2 = null; 
-//        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-//        //testDate2 = LocalDate.parse(testDate.toString(), formatter);
-//        System.out.println(testDate.toString());
-//        String month = String.valueOf(testDate.getMonthValue());
-//        if(month.length() < 2){
-//            month = "0" + month;
-//        }
-//        String day = String.valueOf(testDate.getDayOfMonth());
-//        if(day.length() < 2){
-//            day = "0" + day;
-//        }
-//        String year = String.valueOf(testDate.getYear());
-//        
-//        System.out.println( month + day + year);
         
         do{
             try{
@@ -111,10 +100,24 @@ public class FlooringMasteryController {
         
     }
     
+        /*
+    ** Function Name: getMenuSelection
+    ** Return Type: int
+    ** Purpose: Displayes a menu defined by flooringMasteryMenu in 
+        view.FlooringMasteryView and asks for the user's input. Return the input
+        to be used in run().
+    */
+    
     private int getMenuSelection(){
         
         return view.flooringMasteryMenu();
     }
+    
+         /*
+    ** Function Name: displayOrdersOnDate
+    ** Return Type: void
+    ** Purpose: Creates a list of Orders and displays them through the console.
+    */   
     
     private void displayOrdersOnDate() throws FlooringMasteryFilePersistanceException,
                                               FlooringMasteryFieldIsBlankException,
@@ -122,12 +125,23 @@ public class FlooringMasteryController {
                                               FlooringMasteryMonthIsNotValidException,
                                               FlooringMasteryDayIsNotValidException{
         
-        String[] date = getDate();
+        String[] date = getDate(); //Get date the orders are on. 
         
-        List<Order> orderList = service.getAllOrdersOnDate(date[0], date[1], date[2]);
-        view.displayOrdersOnDate(orderList);
+        List<Order> orderList = service.getAllOrdersOnDate(date[0], date[1], date[2]); //Create list and populate it with Order Objects.
+        view.displayOrdersOnDate(orderList); //Display Orders
         
     }
+    
+             /*
+    ** Function Name: addOrder
+    ** Return Type: void
+    ** Purpose: Gathers the information needed to create an order object. 
+        Afterwards, the function compiles the object through the compileOrder 
+        fuction in service.FlooringMasteryService.
+    
+        After the function is compiled the programs asks the user if the order 
+        should be added or discarded. Added orders are written to file. 
+    */ 
     
     private void addOrder() throws FlooringMasteryFilePersistanceException,
                                    FlooringMasteryYearIsNotValidException,
@@ -221,18 +235,19 @@ public class FlooringMasteryController {
         } while (functionError);
         
         
-        Order newOrder = new Order(1);
+        Order newOrder = new Order(1); //creates a blank Order object to be filled. 
         
-        newOrder = service.compileOrder(newOrder, orderInfo[0], orderInfo[1], orderInfo[2], orderInfo[3]);
+        newOrder = service.compileOrder(newOrder, orderInfo[0], orderInfo[1], orderInfo[2], orderInfo[3]); //Compiles the order
         
-        view.displayOrder(newOrder);
-        //service.addOrder(date[1], date[2], date[0], orderInfo[0], orderInfo[1], orderInfo[2], orderInfo[3]);
+        view.displayOrder(newOrder); //Displays order that was compiled. 
         
         boolean closeFunction = false; 
         
         String confirmOrder = "n";
         confirmOrder = view.confirmationMessage("Would you like to submit this order? (Y/N)");
         
+        
+        //Confirmation loop to determine if order should be added or discarded. 
         while (closeFunction == false){
             if (confirmOrder.equalsIgnoreCase("y")){
                 
@@ -251,6 +266,18 @@ public class FlooringMasteryController {
         }
         
     }
+
+                 /*
+    ** Function Name: editOrder
+    ** Return Type: void
+    ** Purpose: Gathers the information needed to edit an order. Afterwards, the
+        information is sent to the compileOrder function in 
+        service.FlooringMasteryServiceLayer. 
+    
+        The order returned from compileOrder is displayed to the user, at which 
+        point the user can decide to submit the submitted order or discard the 
+        changes, leaving the order unfilled. 
+    */ 
     
     private void editOrder() throws FlooringMasteryFilePersistanceException, FlooringMasteryYearIsNotValidException,
                                     FlooringMasteryMonthIsNotValidException, FlooringMasteryDayIsNotValidException,
@@ -258,9 +285,8 @@ public class FlooringMasteryController {
         
         boolean functionError = false;
         
-        String[] date = getDate();
-        
-
+        //GET DATE
+        String[] date = getDate(); //used to pull the file the order is on. 
         
         //GET ORDERNUMBER
         String ordernum = "0";
@@ -394,6 +420,14 @@ public class FlooringMasteryController {
         }
     }
     
+                     /*
+    ** Function Name: removeOrder
+    ** Return Type: void
+    ** Purpose: Gathers the information needed to remove an order. The order is 
+        then displayed to the user, at which point the user can decide to 
+        delete the order or keep it. 
+    */ 
+    
     private void removeOrder() throws FlooringMasteryFilePersistanceException{
         
         String[] date = getDate();
@@ -448,25 +482,43 @@ public class FlooringMasteryController {
         
     }
     
+                         /*
+    ** Function Name: exportAll
+    ** Return Type: void
+    ** Purpose: Exports all order data from the order files found in the Orders
+        folder to a single file. 
+    */ 
+    
     private void exportAll() throws FlooringMasteryFilePersistanceException{
         
-        service.exportOrderData();
+        service.exportOrderData(); 
         view.confirmationMessage("Order Exported.");
     }
+ 
+                         /*
+    ** Function Name: unknownCommand
+    ** Return Type: void
+    ** Purpose: Used in case the switch function breaks. Displays a message
+        saying the command is unknown and allows the loop to continue. 
+    */ 
     
     private void unknownCommand(){
         view.displayUnknownCommandBanner();
     }
     
+                             /*
+    ** Function Name: getDate
+    ** Return Type: String array
+    ** Purpose: gets a LocalDate object from the user using the getDate() 
+        function  in view.FlooringMasteryView. Breaks the dateobject into three
+        seperate strings used to represent the Month, Day, and Year. 
+    */ 
     private String[] getDate(){
         
         String date[] = new String[3];
         
         LocalDate testDate = view.getDate();
-        //LocalDate testDate2 = null; 
-        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        //testDate2 = LocalDate.parse(testDate.toString(), formatter);
-        //System.out.println(testDate.toString());
+        
         String month = String.valueOf(testDate.getMonthValue());
         if(month.length() < 2){
             month = "0" + month;
