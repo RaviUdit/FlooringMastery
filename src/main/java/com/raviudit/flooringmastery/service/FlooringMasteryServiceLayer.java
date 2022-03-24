@@ -15,6 +15,12 @@ import java.util.List;
  *
  * @author raviu
  */
+
+/*****
+ * Type: Interface
+ * 
+ * 
+ */
 public interface FlooringMasteryServiceLayer {
     
     List<Taxes> getTaxes() throws FlooringMasteryFilePersistanceException;

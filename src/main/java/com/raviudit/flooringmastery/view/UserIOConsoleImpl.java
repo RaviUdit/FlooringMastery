@@ -202,23 +202,12 @@ public class UserIOConsoleImpl implements UserIO{
         return result;
     }
 
-//    public LocalDate readLocalDate(String prompt) {
-//        boolean invalidInput = true;
-//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-//        LocalDate date = null;
-//        while (invalidInput) {
-//            try {
-//                String inputValue = this.readString(prompt);
-//                date = LocalDate.parse(inputValue, dateTimeFormatter);
-//                invalidInput = false;
-//            } catch (DateTimeParseException ex) {
-//                this.print("Please Enter Valid Date: " + ex.getMessage());
-//            }
-//        }
-//        //While loop will keep going until a valid date is inputted as mm/dd/yyyy
-//        return date;
-//    }
-
+    /*
+    ** Function Name: readLocalDate
+    ** Return Type: LocalDate
+    ** Parameters: prompt
+    ** Purpose: Returns a properly formatted LocalDate object
+    */
     @Override
     public LocalDate readLocalDate(String prompt) {
         

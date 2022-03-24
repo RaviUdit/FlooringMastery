@@ -33,7 +33,7 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         this.dao = dao;
     }
 
-    
+    //PASSTHROUGH FUNCTIONS
     @Override
     public List<Taxes> getTaxes() throws FlooringMasteryFilePersistanceException {
         
@@ -55,6 +55,12 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         return dao.getProductByName(productName);
     }
 
+    /*
+    ** Function Name: getAllOrdersOnDate()
+    ** Return Type: List<Order>
+    ** Purpose: Passes a series of Strings representing the date to the 
+                respective DAO function and returns a List of Order objects.
+    */ 
     @Override
     public List<Order> getAllOrdersOnDate(String month, String day, String year) throws FlooringMasteryFilePersistanceException {
         
@@ -62,7 +68,13 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         
         return dao.getAllOrdersOnDate(orderString);
     }
-    
+ 
+    /*
+    ** Function Name: addOrder()
+    ** Return Type: Order
+    ** Purpose: Passes a series of Strings representing the date, and an Order object 
+                to the respective DAO function and returns an Order object.
+    */ 
     @Override
     public Order addOrder(String month, String day, String year,
                           Order newOrder) throws FlooringMasteryFilePersistanceException{
@@ -72,7 +84,15 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         
         return newOrder;
     }
- 
+
+    /*
+    ** Function Name: compileOrder()
+    ** Return Type: Order
+    ** Purpose: Passes a series of Strings representing data used to create an
+                order and calculate the needed variables. Sets the calculated
+                values to the their respective Order values. Finally, returns 
+                the completed order.
+    */ 
     @Override
     public Order compileOrder(Order editOrder, String customerName, String stateName, String productType, String area) throws FlooringMasteryFilePersistanceException {
         
@@ -122,6 +142,12 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         
     }
     
+     /*
+    ** Function Name: editOrder()
+    ** Return Type: void
+    ** Purpose: Passes a series of Strings representing the date, and an Order object 
+                to the respective DAO function.
+    */ 
     @Override
     public void editOrder(String month, String day, String year, Order editedOrder) throws FlooringMasteryFilePersistanceException {
         
@@ -129,7 +155,15 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         
         dao.editOrder(orderString, editedOrder);
     }
-    
+
+     /*
+    ** Function Name: getOrder()
+    ** Return Type: Order
+    ** Purpose: Passes a series of Strings representing the date, and an int 
+                representing the order number to the representitive DAO function.
+                Calls the respective DAO function and returns the Order object 
+                returned by the DAO. 
+    */     
     @Override
     public Order getOrder(String month, String day, String year, int orderNumber)throws FlooringMasteryFilePersistanceException {
         
@@ -138,7 +172,14 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
     }
 
     
-
+     /*
+    ** Function Name: removeOrder()
+    ** Return Type: Order
+    ** Purpose: Passes a series of Strings representing the date, and an int 
+                representing the order number to the representitive DAO function.
+                Calls the respective DAO function and to delete the defined 
+                Order object from the order list. 
+    */   
     @Override
     public Order removeOrder(String month, String day, String year,  int orderNumber)throws FlooringMasteryFilePersistanceException{
         
@@ -148,12 +189,19 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         
     }
     
+    //PASSTHROUGH FUNCTION
     @Override
     public void exportOrderData() throws FlooringMasteryFilePersistanceException {
     
         dao.exportOrderData();
     }
 
+     /*
+    ** Function Name: compileDate()
+    ** Return Type: String
+    ** Purpose: Passes a series of Strings representing the date, and returns a
+                string representing the file to write information to. 
+    */   
     private String compileDate(String month, String day, String year){
         
         String orderDate = "Orders/Orders_" + month + day + year + ".txt";
@@ -162,7 +210,13 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
     }
     
     // Exceptions
-
+     /*
+    ** Function Name: checkIfStateExists()
+    ** Return Type: void
+    ** Purpose: Creates a list of Taxes objects and checks if the state defined 
+                by  String stateCode exists in that list. If the state does not
+                exists, throws an error.
+    */  
     private void checkIfStateExists(String stateCode) throws FlooringMasteryStateCodeDoesNotExistException,
                                                              FlooringMasteryFilePersistanceException{
         
@@ -174,12 +228,24 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         }
     }
 
+      /*
+    ** Function Name: areServiceAvailableThere()
+    ** Return Type: void
+    ** Purpose: calls checkIfStateExists().
+    */  
     @Override
     public void areServicesAvailableThere(String stateCode) throws FlooringMasteryStateCodeDoesNotExistException,
                                                                    FlooringMasteryFilePersistanceException{
         checkIfStateExists(stateCode);
     }
     
+     /*
+    ** Function Name: checkIfProductExists()
+    ** Return Type: void
+    ** Purpose: Creates a list of Product objects and checks if the product 
+                defined by  String product exists in that list. If the product 
+                does not exists, throws an error.
+    */ 
     private void checkIfProductExists(String product) throws FlooringMasteryProductDoesNotExistException,
                                                              FlooringMasteryFilePersistanceException{
         
@@ -191,12 +257,23 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         }
     }
     
+         /*
+    ** Function Name: isProductAvailable()
+    ** Return Type: void
+    ** Purpose: Calls checkIfProductExists().
+    */ 
     @Override
     public void isProductAvailable(String product) throws FlooringMasteryProductDoesNotExistException,
                                                           FlooringMasteryFilePersistanceException{
         checkIfProductExists(product);
     }
-    
+
+     /*
+    ** Function Name: checkIfFieldIsBlank()
+    ** Return Type: void
+    ** Purpose: Checks if the passed String field object is blank. If the field
+                is blank, throws an error.
+    */     
     private void checkIfFieldIsBlank(String field) throws FlooringMasteryFieldIsBlankException{
         
         if (field.isBlank() == true){
@@ -204,14 +281,28 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         }
     }
     
+     /*
+    ** Function Name: isFieldBlank()
+    ** Return Type: void
+    ** Purpose: Calls checkIfFieldIsBlank().
+    */  
     @Override
     public void isFieldBlank(String field) throws FlooringMasteryFieldIsBlankException{
         checkIfFieldIsBlank(field);
     }
     
+    /*
+    ** Function Name: checkIfAreaIsValid()
+    ** Return Type: void
+    ** Purpose: First: Checks if the passed string value has any non-numeric 
+                characters. If the string does, the function throws an error.
+                Second: If the field contains only numbers, checks to make sure
+                the field contains a number over 100. If it doesn't, the 
+                function throws an error. 
+    */   
     private void checkIfAreaIsValid(String area) throws FlooringMasteryAreaIsNotValidException{
         
-        Pattern p = Pattern.compile("[^0-9]");
+        Pattern p = Pattern.compile("[^0-9.]");//setting up regex.
         Matcher m = p.matcher(area);
         
         boolean notValid = m.find();
@@ -230,11 +321,23 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         }
     }
     
+    /*
+    ** Function Name: isAreaValid()
+    ** Return Type: void
+    ** Purpose: Calls checkIfAreaIsValid().
+    */  
     @Override
     public void isAreaValid(String area) throws FlooringMasteryAreaIsNotValidException{
         checkIfAreaIsValid(area);
     }
     
+    /*
+    ** Function Name: checkIfAreaIsValid()
+    ** Return Type: void
+    ** Purpose: Checks if the passed string value has any non-defined 
+                characters. If the string does, the function throws an error.
+                
+    */   
     private void checkIfNameIsValid(String name)  throws FlooringMasteryNameIsNotValidException{
         
         //Regex, matches for any non comma, period, or alphanumeric character.
@@ -248,6 +351,11 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         }
     }
     
+    /*
+    ** Function Name: isNameValid()
+    ** Return Type: void
+    ** Purpose: Calls checkIfNameIsValid().
+    */  
     @Override
     public void isNameValid(String name) throws FlooringMasteryNameIsNotValidException{
         
@@ -334,14 +442,25 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         checkIfYearIsValid(year);
     }
     
+    /*
+    ** Function Name: checkIfDateIsInTheFuture()
+    ** Return Type: void
+    ** Purpose: Takes in a series of Strings that represents the date entered by 
+                the user. Creates a string from the passed strings to compare to
+                a LocalDate object that represents the date the program is run.
+                Compares the two dates, and determines if the user inputted date
+                is before or on the current date. If so, throws an error. 
+                
+    */   
     private void checkIfDateIsInTheFuture(String day, String month, String year) throws FlooringMasteryDateIsNotInTheFutureException{
         
         LocalDate ld = LocalDate.now();
-        String date = year + "-" + month + "-" + day;
+        //String date = year + "-" + month + "-" + day;
+        String date = month + "/" + day + "/" + year;
         
         //String date = "2022-07-13";
         //LocalDate compareDate = LocalDate.parse(month + "/" + day + "/" + year, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-        LocalDate compareDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("uuuu-M-d"));
+        LocalDate compareDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
         
         boolean pastDate = false;
         
@@ -353,12 +472,29 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         
     }
 
+    /*
+    ** Function Name: isAppointmentInTheFuture()
+    ** Return Type: void
+    ** Purpose: Calls checkIfDateIsInTheFuture().
+    */ 
     @Override
     public void isAppointmentInTheFuture(String day, String month, String year) throws FlooringMasteryDateIsNotInTheFutureException {
         
         checkIfDateIsInTheFuture(day, month, year);
     }
     
+    /*
+    ** Function Name: checkIfOrderNumberIsValid()
+    ** Return Type: void
+    ** Purpose: Takes in a series of Strings that represents the date entered by 
+                the user and the order number. If the number field is a 
+                non-numeric character, the function throws an error. 
+    
+                If the number is valid, the function makes a list of Ints 
+                representing the order numbers of the file defined by the date
+                Strings. If the order does not exist, throws an error.
+                
+    */   
     private void checkIfOrderNumberIsValid(String day, String month, String year, String orderNumber) throws FlooringMasteryOrderNumberIsNotValidException,
                                                                                                              FlooringMasteryFilePersistanceException{
         
@@ -380,12 +516,17 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         boolean orderExists = queryList.contains(queryNumber);
         
         if (orderExists != true){
-            String orderDate2 = month + "-" + day + "-" + year;
+            String orderDate2 = month + "/" + day + "/" + year;
             throw new FlooringMasteryOrderNumberIsNotValidException(orderNumber + " on " + orderDate2 +  " is not a preexisting order.");
         }
         
     }
 
+    /*
+    ** Function Name: isOrderNumberValid()
+    ** Return Type: void
+    ** Purpose: Calls checkIfOrderNumberIsValid().
+    */ 
     @Override
     public void isOrderNumberValid(String day, String month, String year, String orderNumber) throws FlooringMasteryOrderNumberIsNotValidException,
                                                                                                      FlooringMasteryFilePersistanceException{

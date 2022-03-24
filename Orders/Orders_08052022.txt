@@ -1,0 +1,2 @@
+OrderNumber:&:CustomerName:&:State:&:TaxRate:&:ProductType:&:Area:&:CostPerSquareFoot:&:LaborCostPerSquareFoot:&:MaterialCost:&:LaborCost:&:Tax:&:Total
+1:&:Wallins, K.:&:TX:&:4.5:&:Tile:&:145.5:&:3.50:&:4.15:&:509.250:&:603.825:&:55.65:&:1168.73
