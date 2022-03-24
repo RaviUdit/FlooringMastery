@@ -50,8 +50,9 @@ public class FlooringMasteryView {
     
      /*
     ** Function Name: displayOrdersOnDate
-    ** Return Type: -
-    ** Purpose: Takes in a List of Orders for a predetermined date and displays those orders as text.
+    ** Return Type: void
+    ** Purpose: Takes in a List of Orders for a predetermined date and displays 
+                those orders on the console.
     */  
     
     public void displayOrdersOnDate(List<Order> orderList){
@@ -72,6 +73,11 @@ public class FlooringMasteryView {
         io.readString("Hit Enter To Continue");
     }
     
+     /*
+    ** Function Name: displayOrder
+    ** Return Type: void
+    ** Purpose: Takes in an Order and displays the order on the console.
+    */ 
     public void displayOrder(Order order){
         
         io.print("Customer Name, State, Product, Total Area, Material Cost, Labor Cost, Taxes, Total");
@@ -92,6 +98,12 @@ public class FlooringMasteryView {
         io.readString("Hit Enter To Continue");
     }   
     
+     /*
+    ** Function Name: displayProducts
+    ** Return Type: void
+    ** Purpose: Takes in a List of Products and displays that list on the
+                console.
+    */ 
     public void displayProducts(List<Product> productList){
         
         io.print("Product Type, Cost Per Square Foot, Labor Cost Per Square Foot");
@@ -110,6 +122,12 @@ public class FlooringMasteryView {
         
     }
     
+     /*
+    ** Function Name: displayTaxes
+    ** Return Type: void
+    ** Purpose: Takes in a List of Taxes and displays that list on the
+                console.
+    */ 
     public void displayTaxes(List<Taxes> taxesList){
         
         io.print("State Code, State, Tax Rate");
