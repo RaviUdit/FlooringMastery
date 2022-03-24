@@ -14,6 +14,12 @@ import java.util.List;
  *
  * @author raviu
  */
+
+/*****
+ * Type: Interface
+ * 
+ * 
+ */
 public interface FlooringMasteryDAO {
     
     

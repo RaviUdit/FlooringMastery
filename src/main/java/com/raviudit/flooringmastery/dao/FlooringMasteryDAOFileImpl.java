@@ -62,6 +62,12 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
     
 
     //FUNCTIONS
+     /*
+    ** Function Name: getTaxes()
+    ** Return Type: List<Taxes>
+    ** Purpose: Loads a list of Taxes objects from a predefined file. 
+                See: TAXES_LOCATION
+    */ 
     @Override
     public List<Taxes> getTaxes() throws FlooringMasteryFilePersistanceException {
         
@@ -69,6 +75,12 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         return new ArrayList(taxes.values());
     }
 
+     /*
+    ** Function Name: getProductss()
+    ** Return Type: List<Product>
+    ** Purpose: Loads a list of Product objects from a predefined file. 
+                See: PRODUCT_LOCATION
+    */ 
     @Override
     public List<Product> getProducts() throws FlooringMasteryFilePersistanceException {
         
@@ -76,6 +88,12 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         return new ArrayList(products.values());
     }
     
+     /*
+    ** Function Name: getTaxesByState()
+    ** Return Type: Taxes
+    ** Purpose: Returns a Taxes object based on the name passed into the 
+                function. 
+    */ 
     @Override
     public Taxes getTaxesByState(String stateAbbr) throws FlooringMasteryFilePersistanceException {
         
@@ -83,6 +101,12 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         return taxes.get(stateAbbr);
     }
 
+     /*
+    ** Function Name: getProductByName()
+    ** Return Type: Product
+    ** Purpose: Returns a Product object based on the name passed into the 
+                function. 
+    */ 
     @Override
     public Product getProductByName(String productName) throws FlooringMasteryFilePersistanceException {
         
@@ -90,6 +114,20 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         return products.get(productName);
     }   
     
+     /*
+    ** Function Name: addOrder()
+    ** Return Type: void
+    ** Purpose: addOrder first determines if the file the passed Order object 
+                will be written to already exists. If the file exists, addOrder
+                pulls the OrderNumber of the last order in the file and sets the 
+                order number of the passed order to the next incremental number.
+                Afterwards, addOrder calls writeOrdersToFile to write the passed
+                order onto that file.
+    
+                If the file dosen't exists, addOrder passes the order to 
+                writeOrderToNonexistingFile to create the file and write the 
+                order to it. 
+    */ 
     @Override
     public void addOrder(String orderDate, Order order)  throws FlooringMasteryFilePersistanceException {
         
@@ -109,7 +147,15 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
        
     }
     
-    
+     /*
+    ** Function Name: editOrder()
+    ** Return Type: void
+    ** Purpose: First: loads orders from file defined by String orderDate into a
+                list. 
+                Second: Puts the modified order into the orderList, overwriting 
+                the previous order with that number.
+                Lastly: Writes orderList to file. 
+    */     
     @Override
     public void editOrder(String orderDate, Order order) throws FlooringMasteryFilePersistanceException {
         
@@ -119,6 +165,13 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         
     }
 
+     /*
+    ** Function Name: getOrder()
+    ** Return Type: void
+    ** Purpose: First: First: loads orders from file defined by String orderDate 
+                into a list. 
+                Second: Returns an Order objects defined by orderNumber
+    */ 
     @Override
     public Order getOrder(String orderDate, int orderNumber) throws FlooringMasteryFilePersistanceException{
         
@@ -127,6 +180,12 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
        
     }
 
+     /*
+    ** Function Name: getAllOrdersOnDate()
+    ** Return Type: List<Order>
+    ** Purpose: Returns a list of Order Objects from a file defined by
+                the passed String orderDate. 
+    */ 
     @Override
     public List<Order> getAllOrdersOnDate(String orderDate) throws FlooringMasteryFilePersistanceException{
        
@@ -134,6 +193,13 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         return new ArrayList(orders.values());
     }
 
+     /*
+    ** Function Name: removeOrder()
+    ** Return Type: Order
+    ** Purpose: Deletes an order from an List of Orders populated from a file 
+                defined by String orderDate. Then writes 
+                that updated list to the defined file.
+    */ 
     @Override
     public Order removeOrder(String orderDate, int orderNumber) throws FlooringMasteryFilePersistanceException{
         
@@ -147,7 +213,13 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
     
 
     
-    //Code to unmarshall and load Taxes    
+    //Code to unmarshall and load Taxes   
+     /*
+    ** Function Name: loadTaxesFromFile()
+    ** Return Type: void
+    ** Purpose: Loads a list of Taxes objects from a file in a predefined 
+                location. See: TAXES_LOCATION
+    */ 
     private void loadTaxesFromFile() throws FlooringMasteryFilePersistanceException{
         
         Scanner scanner; 
@@ -172,6 +244,12 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         
     }
     
+     /*
+    ** Function Name: unmarshallTaxes()
+    ** Return Type: Taxes
+    ** Purpose: Creates a Taxes object froma string defined by the passed 
+                variable String taxesAsString. 
+    */ 
     private Taxes unmarshallTaxes(String taxesAsString){
         
         String[] taxToken = taxesAsString.split(DELIMITER);
@@ -188,7 +266,12 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
     
     
     //Code to unmarshall and load Products
-    
+     /*
+    ** Function Name: loadProductsFromFile()
+    ** Return Type: void
+    ** Purpose: Loads a list of Product objects from a file in a predefined 
+                location. See: PRODUCT_LOCATION
+    */ 
     private void loadProductsFromFile() throws FlooringMasteryFilePersistanceException{
         
         Scanner scanner; 
@@ -211,7 +294,13 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         
         scanner.close();
     }
-        
+      
+    /*
+    ** Function Name: unmarshallProducts()
+    ** Return Type: Product
+    ** Purpose: Creates a Product object froma string defined by the passed 
+                variable String productAsString. 
+    */ 
     private Product unmarshallProducts(String productsAsString){
         
         String[] productToken = productsAsString.split(DELIMITER);
@@ -229,6 +318,12 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
 
 
     //Code to load and write orders to file
+    /*
+    ** Function Name: loadOrdersFromFile()
+    ** Return Type: void
+    ** Purpose: Loads a list of Order objects from a file defined by the passed
+                value String orderDate.
+    */ 
     private void loadOrdersFromFile(String orderDate) throws FlooringMasteryFilePersistanceException{
         
         Scanner scanner;
@@ -255,6 +350,12 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         scanner.close();
     }
     
+    /*
+    ** Function Name: writeOrdersToFile()
+    ** Return Type: void
+    ** Purpose: Writes a list of Orders to a file defined by the passed value 
+                of String orderDate. 
+    */ 
     private void writeOrdersToFile(String orderDate) throws FlooringMasteryFilePersistanceException{
         
         PrintWriter out;
@@ -280,6 +381,12 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         out.close();
     }
     
+    /*
+    ** Function Name: writeOrderToNonexistingFile()
+    ** Return Type: void
+    ** Purpose: Creates a file whose names is defined by the passed value of 
+                String orderDate. Then writes the passed Order to the new file. 
+    */ 
     private void writeOrderToNonexistingFile(String orderDate, Order order) throws FlooringMasteryFilePersistanceException{
         
         PrintWriter out;
@@ -302,6 +409,12 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         out.close();
     }
     
+    /*
+    ** Function Name: unmarshallOrder()
+    ** Return Type: Order
+    ** Purpose: Creates a Order object from a string defined by the passed 
+                variable String orderAsText. 
+    */ 
     private Order unmarshallOrder(String orderAsText){
         
         String[] orderToken = orderAsText.split(DELIMITER);
@@ -328,6 +441,11 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         
     }
     
+    /*
+    ** Function Name: marshallOrder()
+    ** Return Type: String
+    ** Purpose: Turns an Order object into a String ready to by written to file. 
+    */ 
     private String marshallOrder(Order order){
         
         String orderAsText = String.valueOf(order.getOrderNumber()) + DELIMITER;
@@ -347,6 +465,18 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         return orderAsText;
     }
     
+     /*
+    ** Function Name: exportOrderData()
+    ** Return Type: void
+    ** Purpose: First: First: loads a file array with the names of all files 
+                within the predefined location. See:ORDERS_FOLDER.
+                Second: Creates a loop to read files and make a list of Order
+                objects.
+                Third: Creates a loop to write the orders to a predefined file. 
+                See: EXPORT_LOCATION
+                Fourth: Clears the order list and starts the process again with
+                the next file in the File array. 
+    */ 
     @Override
     public void exportOrderData() throws FlooringMasteryFilePersistanceException {
         
@@ -371,16 +501,20 @@ public class FlooringMasteryDAOFileImpl implements FlooringMasteryDAO{
         out.println(headerString);
         out.flush();
         
+        //Write Loop
         for (File file: filesList){
             
             loadOrdersFromFile("Orders/" + file.getName());
             List<Order> orderList = new ArrayList(orders.values());
            
+            //gets the date that the orders were filed in and turning them into
+            //Strings to be written to file
             String originalString = file.getName();
             String month = originalString.substring(7, 9);
             String day = originalString.substring(9, 11);
             String year = originalString.substring(11,15);
             
+            //writing orders to file.
             for (Order currentOrder : orderList){
                 orderAsText = marshallOrder(currentOrder);
                 out.println(orderAsText + DELIMITER + month + "-" + day + "-" + year);

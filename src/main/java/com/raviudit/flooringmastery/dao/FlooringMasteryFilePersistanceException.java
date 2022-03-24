@@ -9,6 +9,12 @@ package com.raviudit.flooringmastery.dao;
  *
  * @author raviu
  */
+
+/*****
+ * Type: Exception. 
+ * 
+ * Purpose: Thrown if a requested file does not exist. 
+ */
 public class FlooringMasteryFilePersistanceException extends Exception{
     
     public FlooringMasteryFilePersistanceException(String message){
