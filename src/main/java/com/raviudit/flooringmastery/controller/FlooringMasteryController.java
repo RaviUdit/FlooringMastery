@@ -264,7 +264,7 @@ public class FlooringMasteryController {
                 closeFunction = true;
             } else {
 
-                view.confirmationMessage("Unspecified option. Please choose Yes or No (Y/N)");
+                view.confirmationMessage("Unspecified option.");
                 closeFunction = false;
             }
         }
