@@ -150,10 +150,28 @@ public class FlooringMasteryServiceLayerImplTest {
     }
     
     @Test
-    public void testCheckIsOrderNumberValid() throws Exception{
+    public void testCheckIsOrderNumberValidInvalidDate() throws Exception{
         
 
         String testDate = "01/01/1985";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        
+        LocalDate errorDate = LocalDate.parse(testDate, formatter);
+        
+        String testOrderNumber = "10";
+        try{
+            service.isOrderNumberValid(errorDate, testOrderNumber);
+            fail(" Expected exception was not thrown");
+        }catch(FlooringMasteryOrderNumberIsNotValidException e){
+            return;
+        }
+    }
+    
+        @Test
+    public void testCheckIsOrderNumberValidInvalidnumber() throws Exception{
+        
+
+        String testDate = "06/01/1985";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         
         LocalDate errorDate = LocalDate.parse(testDate, formatter);

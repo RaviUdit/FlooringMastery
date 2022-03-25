@@ -247,11 +247,12 @@ public class FlooringMasteryController {
         boolean closeFunction = false; 
         
         String confirmOrder = "n";
-        confirmOrder = view.confirmationMessage("Would you like to submit this order? (Y/N)");
+        
         
         
         //Confirmation loop to determine if order should be added or discarded. 
         while (closeFunction == false){
+            confirmOrder = view.confirmationMessage("Would you like to submit this order? (Y/N)");
             if (confirmOrder.equalsIgnoreCase("y")){
                 
                 service.addOrder(orderDate, newOrder);
@@ -515,37 +516,5 @@ public class FlooringMasteryController {
         view.displayUnknownCommandBanner();
     }
     
-    //MOVED TO SERVICE
-                             /*
-    ** Function Name: getDate
-    ** Return Type: String array
-    ** Purpose: gets a LocalDate object from the user using the getDate() 
-        function  in view.FlooringMasteryView. Breaks the dateobject into three
-        seperate strings used to represent the Month, Day, and Year. 
-    */ 
-//    private String[] getDate(){
-//        
-//        String date[] = new String[3];
-//        
-//        LocalDate testDate = view.getDate();
-//        
-//        String month = String.valueOf(testDate.getMonthValue());
-//        if(month.length() < 2){
-//            month = "0" + month;
-//        }
-//        String day = String.valueOf(testDate.getDayOfMonth());
-//        if(day.length() < 2){
-//            day = "0" + day;
-//        }
-//        String year = String.valueOf(testDate.getYear());
-//        
-//        date[0] = month;
-//        date[1] = day;
-//        date[2] = year;
-//        
-//        //System.out.println( date[0] + date[1] + date[2]);
-//        
-//        return date;
-//    }
     
 }
