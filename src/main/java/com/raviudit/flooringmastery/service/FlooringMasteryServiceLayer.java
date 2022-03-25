@@ -9,6 +9,7 @@ import com.raviudit.flooringmastery.dao.FlooringMasteryFilePersistanceException;
 import com.raviudit.flooringmastery.model.Order;
 import com.raviudit.flooringmastery.model.Product;
 import com.raviudit.flooringmastery.model.Taxes;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -31,19 +32,19 @@ public interface FlooringMasteryServiceLayer {
     
     Product getProductByName(String productName) throws FlooringMasteryFilePersistanceException;
     
-    Order addOrder(String month, String day, String year, Order newOrder)
+    Order addOrder(LocalDate orderDate, Order newOrder)
                                                  throws FlooringMasteryFilePersistanceException;
     
     Order compileOrder(Order editOrder, String customerName, String stateName, String productType, String area) throws FlooringMasteryFilePersistanceException;
     
-    void editOrder(String month, String day, String year, Order editedOrder)
+    void editOrder(LocalDate orderDate, Order editedOrder)
                                                  throws FlooringMasteryFilePersistanceException;
     
-    Order getOrder(String month, String day, String year, int orderNumber)throws FlooringMasteryFilePersistanceException;
+    Order getOrder(LocalDate orderDate, int orderNumber)throws FlooringMasteryFilePersistanceException;
     
-    List<Order> getAllOrdersOnDate(String month, String day, String year) throws FlooringMasteryFilePersistanceException;
+    List<Order> getAllOrdersOnDate(LocalDate ld) throws FlooringMasteryFilePersistanceException;
     
-    Order removeOrder(String month, String day, String year, int orderNumber)throws FlooringMasteryFilePersistanceException;
+    Order removeOrder(LocalDate orderDate, int orderNumber)throws FlooringMasteryFilePersistanceException;
     
     void exportOrderData() throws FlooringMasteryFilePersistanceException;
     
@@ -67,8 +68,8 @@ public interface FlooringMasteryServiceLayer {
     
     void isYearValid(String year) throws FlooringMasteryYearIsNotValidException;
     
-    void isAppointmentInTheFuture(String day, String month, String year) throws FlooringMasteryDateIsNotInTheFutureException;
+    void isAppointmentInTheFuture(LocalDate orderDate) throws FlooringMasteryDateIsNotInTheFutureException;
     
-    void isOrderNumberValid(String day, String month, String year, String orderNumber) throws FlooringMasteryOrderNumberIsNotValidException,
+    void isOrderNumberValid(LocalDate orderDate, String orderNumber) throws FlooringMasteryOrderNumberIsNotValidException,
                                                                                               FlooringMasteryFilePersistanceException;
 }

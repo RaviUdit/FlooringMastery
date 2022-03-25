@@ -6,6 +6,8 @@
 package com.raviudit.flooringmastery.service;
 
 import com.raviudit.flooringmastery.dao.FlooringMasteryDAO;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -131,11 +133,16 @@ public class FlooringMasteryServiceLayerImplTest {
     @Test
     public void testCheckIfDateIsInTheFuture() throws Exception{
         
-        String testStringDay = "01";
-        String testStringMonth = "01";
-        String testStringYear = "1995";
+//        String testStringDay = "01";
+//        String testStringMonth = "01";
+//        String testStringYear = "1995";
+        
+        String testDate = "01/01/1985";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        
+        LocalDate errorDate = LocalDate.parse(testDate, formatter);
         try{
-            service.isAppointmentInTheFuture(testStringDay, testStringMonth, testStringYear);
+            service.isAppointmentInTheFuture(errorDate);
             fail(" Expected exception was not thrown");
         }catch(FlooringMasteryDateIsNotInTheFutureException e){
             return;
@@ -145,12 +152,15 @@ public class FlooringMasteryServiceLayerImplTest {
     @Test
     public void testCheckIsOrderNumberValid() throws Exception{
         
-        String testStringDay = "01";
-        String testStringMonth = "01";
-        String testStringYear = "1995";
+
+        String testDate = "01/01/1985";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        
+        LocalDate errorDate = LocalDate.parse(testDate, formatter);
+        
         String testOrderNumber = "10";
         try{
-            service.isOrderNumberValid(testStringDay, testStringMonth, testStringYear, testOrderNumber);
+            service.isOrderNumberValid(errorDate, testOrderNumber);
             fail(" Expected exception was not thrown");
         }catch(FlooringMasteryOrderNumberIsNotValidException e){
             return;

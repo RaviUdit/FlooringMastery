@@ -125,9 +125,9 @@ public class FlooringMasteryController {
                                               FlooringMasteryMonthIsNotValidException,
                                               FlooringMasteryDayIsNotValidException{
         
-        String[] date = getDate(); //Get date the orders are on. 
+        LocalDate ld = view.getDate(); //Get date the orders are on. 
         
-        List<Order> orderList = service.getAllOrdersOnDate(date[0], date[1], date[2]); //Create list and populate it with Order Objects.
+        List<Order> orderList = service.getAllOrdersOnDate(ld); //Create list and populate it with Order Objects.
         view.displayOrdersOnDate(orderList); //Display Orders
         
     }
@@ -152,12 +152,15 @@ public class FlooringMasteryController {
         
         
         //GET DATE
-        String[] date = new String[3];
+        LocalDate orderDate = null; 
+        //String[] date = new String[3];
         
         do{
             try{
-                date = getDate();
-                service.isAppointmentInTheFuture(date[1], date[0], date[2]);
+                orderDate = view.getDate();
+                
+                //date = getDate();
+                service.isAppointmentInTheFuture(orderDate);
                 
                 functionError = false;
             } catch ( FlooringMasteryDateIsNotInTheFutureException e){
@@ -251,7 +254,7 @@ public class FlooringMasteryController {
         while (closeFunction == false){
             if (confirmOrder.equalsIgnoreCase("y")){
                 
-                service.addOrder(date[0], date[1], date[2], newOrder);
+                service.addOrder(orderDate, newOrder);
                 view.confirmationMessage("Order Submitted");
                 closeFunction = true;
             } else if (confirmOrder.equalsIgnoreCase("n")){
@@ -286,7 +289,8 @@ public class FlooringMasteryController {
         boolean functionError = false;
         
         //GET DATE
-        String[] date = getDate(); //used to pull the file the order is on. 
+        //String[] date = getDate(); //used to pull the file the order is on. 
+        LocalDate orderDate = view.getDate();
         
         //GET ORDERNUMBER
         String ordernum = "0";
@@ -296,7 +300,7 @@ public class FlooringMasteryController {
                 
                 ordernum = view.getOrderNumber();
                 service.isFieldBlank(ordernum);
-                service.isOrderNumberValid(date[1], date[0], date[2], ordernum);
+                service.isOrderNumberValid(orderDate, ordernum);
                 
                 functionError = false;
             } catch(FlooringMasteryFieldIsBlankException | FlooringMasteryOrderNumberIsNotValidException e){
@@ -308,7 +312,7 @@ public class FlooringMasteryController {
         
         int orderNumber = Integer.parseInt(ordernum);
         
-        Order workingOrder = service.getOrder(date[0], date[1], date[2], orderNumber);
+        Order workingOrder = service.getOrder(orderDate, orderNumber);
         
         view.displayOrder(workingOrder);
         
@@ -400,12 +404,14 @@ public class FlooringMasteryController {
         boolean closeFunction = false;
         
         String confirmEdit = "n";
-        confirmEdit = view.confirmationMessage("Would you like to submit this edited order? (Y/N)");
+       
         
         while (closeFunction == false){
+            confirmEdit = view.confirmationMessage("Would you like to submit this edited order? (Y/N)");
+             
             if (confirmEdit.equalsIgnoreCase("y")){
                 
-                service.editOrder(date[0], date[1], date[2], workingOrder);
+                service.editOrder(orderDate, workingOrder);
                 view.confirmationMessage("Order Edited");
                 closeFunction = true;
             } else if (confirmEdit.equalsIgnoreCase("n")){
@@ -414,7 +420,7 @@ public class FlooringMasteryController {
                 closeFunction = true;
             } else {
 
-                view.confirmationMessage("Unspecified option. Please choose Yes or No (Y/N)");
+                view.confirmationMessage("Unspecified option.");
                 closeFunction = false;
             }
         }
@@ -430,7 +436,8 @@ public class FlooringMasteryController {
     
     private void removeOrder() throws FlooringMasteryFilePersistanceException{
         
-        String[] date = getDate();
+        //String[] date = getDate();
+        LocalDate orderDate = view.getDate();
         boolean functionError = false;
         
 
@@ -442,7 +449,7 @@ public class FlooringMasteryController {
                 
                 ordernum = view.getOrderNumber();
                 service.isFieldBlank(ordernum);
-                service.isOrderNumberValid(date[1], date[0], date[2], ordernum);
+                service.isOrderNumberValid(orderDate, ordernum);
                 
                 functionError = false;
             } catch(FlooringMasteryFieldIsBlankException | FlooringMasteryOrderNumberIsNotValidException e){
@@ -454,18 +461,20 @@ public class FlooringMasteryController {
         
         int orderNumber = Integer.parseInt(ordernum);
         
-        view.displayOrder(service.getOrder(date[0], date[1], date[2], orderNumber));
+        view.displayOrder(service.getOrder(orderDate, orderNumber));
         
         String confirmDeletion = "n";
         
         boolean closeFunction = false;
         
-        confirmDeletion = view.confirmationMessage("Would you like to delete this order? (Y/N)");
+        
         
         while (closeFunction == false){
+            confirmDeletion = view.confirmationMessage("Would you like to delete this order? (Y/N)");
+            
             if(confirmDeletion.equalsIgnoreCase("y")){
 
-                service.removeOrder(date[0], date[1], date[2], orderNumber);
+                service.removeOrder(orderDate, orderNumber);
                 view.confirmationMessage("Order deleted.");
                 closeFunction = true;
 
@@ -475,7 +484,7 @@ public class FlooringMasteryController {
                 closeFunction = true;
             } else {
 
-                view.confirmationMessage("Unspecified option. Please choose Yes or No (Y/N)");
+                view.confirmationMessage("Unspecified option.");
                 closeFunction = false;
             }
         }
@@ -506,6 +515,7 @@ public class FlooringMasteryController {
         view.displayUnknownCommandBanner();
     }
     
+    //MOVED TO SERVICE
                              /*
     ** Function Name: getDate
     ** Return Type: String array
@@ -513,29 +523,29 @@ public class FlooringMasteryController {
         function  in view.FlooringMasteryView. Breaks the dateobject into three
         seperate strings used to represent the Month, Day, and Year. 
     */ 
-    private String[] getDate(){
-        
-        String date[] = new String[3];
-        
-        LocalDate testDate = view.getDate();
-        
-        String month = String.valueOf(testDate.getMonthValue());
-        if(month.length() < 2){
-            month = "0" + month;
-        }
-        String day = String.valueOf(testDate.getDayOfMonth());
-        if(day.length() < 2){
-            day = "0" + day;
-        }
-        String year = String.valueOf(testDate.getYear());
-        
-        date[0] = month;
-        date[1] = day;
-        date[2] = year;
-        
-        //System.out.println( date[0] + date[1] + date[2]);
-        
-        return date;
-    }
+//    private String[] getDate(){
+//        
+//        String date[] = new String[3];
+//        
+//        LocalDate testDate = view.getDate();
+//        
+//        String month = String.valueOf(testDate.getMonthValue());
+//        if(month.length() < 2){
+//            month = "0" + month;
+//        }
+//        String day = String.valueOf(testDate.getDayOfMonth());
+//        if(day.length() < 2){
+//            day = "0" + day;
+//        }
+//        String year = String.valueOf(testDate.getYear());
+//        
+//        date[0] = month;
+//        date[1] = day;
+//        date[2] = year;
+//        
+//        //System.out.println( date[0] + date[1] + date[2]);
+//        
+//        return date;
+//    }
     
 }

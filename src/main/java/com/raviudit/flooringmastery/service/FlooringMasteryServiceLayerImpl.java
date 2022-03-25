@@ -62,9 +62,10 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
                 respective DAO function and returns a List of Order objects.
     */ 
     @Override
-    public List<Order> getAllOrdersOnDate(String month, String day, String year) throws FlooringMasteryFilePersistanceException {
+    public List<Order> getAllOrdersOnDate(LocalDate orderDate) throws FlooringMasteryFilePersistanceException {
         
-        String orderString = compileDate(month, day, year);
+        String[] dateString = getDate(orderDate);
+        String orderString = compileDate(dateString[0], dateString[1], dateString[2]);
         
         return dao.getAllOrdersOnDate(orderString);
     }
@@ -76,10 +77,14 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
                 to the respective DAO function and returns an Order object.
     */ 
     @Override
-    public Order addOrder(String month, String day, String year,
+    public Order addOrder(LocalDate orderDate,
                           Order newOrder) throws FlooringMasteryFilePersistanceException{
         
-        String orderString = compileDate(month, day, year);
+        //String orderString = compileDate(month, day, year);
+        
+        String[] dateString = getDate(orderDate);
+        String orderString = compileDate(dateString[0], dateString[1], dateString[2]);
+        
         dao.addOrder(orderString, newOrder);
         
         return newOrder;
@@ -149,9 +154,12 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
                 to the respective DAO function.
     */ 
     @Override
-    public void editOrder(String month, String day, String year, Order editedOrder) throws FlooringMasteryFilePersistanceException {
+    public void editOrder(LocalDate orderDate, Order editedOrder) throws FlooringMasteryFilePersistanceException {
         
-        String orderString = compileDate(month, day, year);
+        //String orderString = compileDate(month, day, year);
+        
+        String[] dateString = getDate(orderDate);
+        String orderString = compileDate(dateString[0], dateString[1], dateString[2]);
         
         dao.editOrder(orderString, editedOrder);
     }
@@ -165,9 +173,12 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
                 returned by the DAO. 
     */     
     @Override
-    public Order getOrder(String month, String day, String year, int orderNumber)throws FlooringMasteryFilePersistanceException {
+    public Order getOrder(LocalDate orderDate, int orderNumber)throws FlooringMasteryFilePersistanceException {
         
-        String orderString = compileDate(month, day, year);       
+        //String orderString = compileDate(month, day, year);       
+        String[] dateString = getDate(orderDate);
+        String orderString = compileDate(dateString[0], dateString[1], dateString[2]);
+        
         return dao.getOrder(orderString, orderNumber);   
     }
 
@@ -181,9 +192,11 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
                 Order object from the order list. 
     */   
     @Override
-    public Order removeOrder(String month, String day, String year,  int orderNumber)throws FlooringMasteryFilePersistanceException{
+    public Order removeOrder(LocalDate orderDate,  int orderNumber)throws FlooringMasteryFilePersistanceException{
         
-        String orderString = compileDate(month, day, year);
+        //String orderString = compileDate(month, day, year);
+        String[] dateString = getDate(orderDate);
+        String orderString = compileDate(dateString[0], dateString[1], dateString[2]);
         
         return dao.removeOrder(orderString, orderNumber);
         
@@ -452,15 +465,16 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
                 is before or on the current date. If so, throws an error. 
                 
     */   
-    private void checkIfDateIsInTheFuture(String day, String month, String year) throws FlooringMasteryDateIsNotInTheFutureException{
+    private void checkIfDateIsInTheFuture(LocalDate orderDate) throws FlooringMasteryDateIsNotInTheFutureException{
         
         LocalDate ld = LocalDate.now();
         //String date = year + "-" + month + "-" + day;
-        String date = month + "/" + day + "/" + year;
+        //String date = month + "/" + day + "/" + year;
         
         //String date = "2022-07-13";
         //LocalDate compareDate = LocalDate.parse(month + "/" + day + "/" + year, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-        LocalDate compareDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        //LocalDate compareDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        LocalDate compareDate = orderDate;
         
         boolean pastDate = false;
         
@@ -478,9 +492,9 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
     ** Purpose: Calls checkIfDateIsInTheFuture().
     */ 
     @Override
-    public void isAppointmentInTheFuture(String day, String month, String year) throws FlooringMasteryDateIsNotInTheFutureException {
+    public void isAppointmentInTheFuture(LocalDate orderDate) throws FlooringMasteryDateIsNotInTheFutureException {
         
-        checkIfDateIsInTheFuture(day, month, year);
+        checkIfDateIsInTheFuture(orderDate);
     }
     
     /*
@@ -495,7 +509,7 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
                 Strings. If the order does not exist, throws an error.
                 
     */   
-    private void checkIfOrderNumberIsValid(String day, String month, String year, String orderNumber) throws FlooringMasteryOrderNumberIsNotValidException,
+    private void checkIfOrderNumberIsValid(LocalDate orderDate, String orderNumber) throws FlooringMasteryOrderNumberIsNotValidException,
                                                                                                              FlooringMasteryFilePersistanceException{
         
         Pattern p = Pattern.compile("[^0-9]");
@@ -507,17 +521,18 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
             throw new FlooringMasteryOrderNumberIsNotValidException("Order Numbers nust be represented by numberic values.");
         }
         
-        String orderDate = compileDate(month, day, year);
+        String[] dateString = getDate(orderDate);
+        String fileDate = compileDate(dateString[0], dateString[1], dateString[2]);
         
         //List<String> queryList = dao.getProducts().stream().map((p)->p.getProductType()).collect(Collectors.toList());
-        List<Integer> queryList = dao.getAllOrdersOnDate(orderDate).stream().map((o)->o.getOrderNumber()).collect(Collectors.toList());
+        List<Integer> queryList = dao.getAllOrdersOnDate(fileDate).stream().map((o)->o.getOrderNumber()).collect(Collectors.toList());
         int queryNumber = Integer.parseInt(orderNumber);
         
         boolean orderExists = queryList.contains(queryNumber);
         
         if (orderExists != true){
-            String orderDate2 = month + "/" + day + "/" + year;
-            throw new FlooringMasteryOrderNumberIsNotValidException(orderNumber + " on " + orderDate2 +  " is not a preexisting order.");
+            String errorDate = orderDate.format(DateTimeFormatter.ofPattern("M/d/yyyy"));
+            throw new FlooringMasteryOrderNumberIsNotValidException(orderNumber + " on " + errorDate +  " is not a preexisting order.");
         }
         
     }
@@ -528,9 +543,41 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
     ** Purpose: Calls checkIfOrderNumberIsValid().
     */ 
     @Override
-    public void isOrderNumberValid(String day, String month, String year, String orderNumber) throws FlooringMasteryOrderNumberIsNotValidException,
+    public void isOrderNumberValid(LocalDate orderDate, String orderNumber) throws FlooringMasteryOrderNumberIsNotValidException,
                                                                                                      FlooringMasteryFilePersistanceException{
         
-        checkIfOrderNumberIsValid(day, month, year, orderNumber);
+        checkIfOrderNumberIsValid(orderDate, orderNumber);
     }
- }
+    
+    /** Function Name: getDate
+    ** Return Type: String array
+    ** Purpose: gets a LocalDate object from the user using the getDate() 
+        function  in view.FlooringMasteryView. Breaks the date object into three
+        separate strings used to represent the Month, Day, and Year. 
+    */ 
+    private String[] getDate(LocalDate ld){
+        
+        String date[] = new String[3];
+        
+        LocalDate functionDate = ld;
+        
+        String month = String.valueOf(functionDate.getMonthValue());
+        if(month.length() < 2){
+            month = "0" + month;
+        }
+        String day = String.valueOf(functionDate.getDayOfMonth());
+        if(day.length() < 2){
+            day = "0" + day;
+        }
+        String year = String.valueOf(functionDate.getYear());
+        
+        date[0] = month;
+        date[1] = day;
+        date[2] = year;
+        
+        //System.out.println( date[0] + date[1] + date[2]);
+        
+        return date;
+    }
+    
+}
