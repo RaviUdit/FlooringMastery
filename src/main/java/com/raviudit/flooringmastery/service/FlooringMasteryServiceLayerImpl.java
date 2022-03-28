@@ -374,94 +374,11 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         
         checkIfNameIsValid(name);
     }
-    
-    private void checkIfMonthIfValid(String month) throws FlooringMasteryMonthIsNotValidException{
-        
-        Pattern p = Pattern.compile("[^0-9]");
-        Matcher m = p.matcher(month);
-        
-        boolean notValid = m.find();
-        
-        if (notValid == true){
-            throw new FlooringMasteryMonthIsNotValidException("Months must be represented through 01-12");
-        }
-        
-        int checkValue = Integer.parseInt(month);
-        
-        if (checkValue < 1 || checkValue > 12){
-            throw new FlooringMasteryMonthIsNotValidException("Months must be through 01-12.");
-        }
-    }
-    
-    @Override
-    public void isMonthValid(String month) throws FlooringMasteryMonthIsNotValidException{
-        
-        checkIfMonthIfValid(month);
-    }
-    
-    private void checkIfDayIsValid(String day, String month, String year) throws FlooringMasteryDayIsNotValidException{
-        
-        Pattern p = Pattern.compile("[^0-9]");
-        Matcher m = p.matcher(day);
-        
-        boolean notValid = m.find();
-        
-        if (notValid == true){
-            throw new FlooringMasteryDayIsNotValidException("Dates nust be represented by numberic values.");
-        }
-        
-        
-        boolean dateValid = true;
-        
-        String date = year + "-" + month + "-" + day;
-        
-        try{
-            LocalDate.parse( date, DateTimeFormatter.ofPattern("uuuu-M-d").withResolverStyle(ResolverStyle.STRICT));
-            
-            dateValid = true;
-        } catch (DateTimeParseException e){
-            
-            dateValid = false; 
-        }
-        
-        if (dateValid == false){
-            throw new FlooringMasteryDayIsNotValidException("This is not a valid Date.");
-        }
-        
-        
-    }
 
-    @Override
-    public void isDateValid(String day, String month, String year) throws FlooringMasteryDayIsNotValidException {
-       
-        checkIfDayIsValid(day, month, year);
-    }
-    
-    private void checkIfYearIsValid(String year) throws FlooringMasteryYearIsNotValidException{
-    
-        Pattern p = Pattern.compile("[^0-9]");
-        Matcher m = p.matcher(year);
-        
-        boolean notValid = m.find();
-        
-        if (notValid == true){
-            throw new FlooringMasteryYearIsNotValidException("Years nust be represented by numberic values.");
-        }
-    }
-
-    @Override
-    public void isYearValid(String year) throws FlooringMasteryYearIsNotValidException {
-        
-        checkIfYearIsValid(year);
-    }
-    
     /*
     ** Function Name: checkIfDateIsInTheFuture()
     ** Return Type: void
-    ** Purpose: Takes in a series of Strings that represents the date entered by 
-                the user. Creates a string from the passed strings to compare to
-                a LocalDate object that represents the date the program is run.
-                Compares the two dates, and determines if the user inputted date
+    ** Purpose: Compares the two dates, and determines if the user inputted date
                 is before or on the current date. If so, throws an error. 
                 
     */   
@@ -580,4 +497,84 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         return date;
     }
     
+    //    
+//    private void checkIfMonthIfValid(String month) throws FlooringMasteryMonthIsNotValidException{
+//        
+//        Pattern p = Pattern.compile("[^0-9]");
+//        Matcher m = p.matcher(month);
+//        
+//        boolean notValid = m.find();
+//        
+//        if (notValid == true){
+//            throw new FlooringMasteryMonthIsNotValidException("Months must be represented through 01-12");
+//        }
+//        
+//        int checkValue = Integer.parseInt(month);
+//        
+//        if (checkValue < 1 || checkValue > 12){
+//            throw new FlooringMasteryMonthIsNotValidException("Months must be through 01-12.");
+//        }
+//    }
+//    
+//    @Override
+//    public void isMonthValid(String month) throws FlooringMasteryMonthIsNotValidException{
+//        
+//        checkIfMonthIfValid(month);
+//    }
+//    
+//    private void checkIfDayIsValid(String day, String month, String year) throws FlooringMasteryDayIsNotValidException{
+//        
+//        Pattern p = Pattern.compile("[^0-9]");
+//        Matcher m = p.matcher(day);
+//        
+//        boolean notValid = m.find();
+//        
+//        if (notValid == true){
+//            throw new FlooringMasteryDayIsNotValidException("Dates nust be represented by numberic values.");
+//        }
+//        
+//        
+//        boolean dateValid = true;
+//        
+//        String date = year + "-" + month + "-" + day;
+//        
+//        try{
+//            LocalDate.parse( date, DateTimeFormatter.ofPattern("uuuu-M-d").withResolverStyle(ResolverStyle.STRICT));
+//            
+//            dateValid = true;
+//        } catch (DateTimeParseException e){
+//            
+//            dateValid = false; 
+//        }
+//        
+//        if (dateValid == false){
+//            throw new FlooringMasteryDayIsNotValidException("This is not a valid Date.");
+//        }
+//        
+//        
+//    }
+//
+//    @Override
+//    public void isDateValid(String day, String month, String year) throws FlooringMasteryDayIsNotValidException {
+//       
+//        checkIfDayIsValid(day, month, year);
+//    }
+//    
+//    private void checkIfYearIsValid(String year) throws FlooringMasteryYearIsNotValidException{
+//    
+//        Pattern p = Pattern.compile("[^0-9]");
+//        Matcher m = p.matcher(year);
+//        
+//        boolean notValid = m.find();
+//        
+//        if (notValid == true){
+//            throw new FlooringMasteryYearIsNotValidException("Years nust be represented by numberic values.");
+//        }
+//    }
+//
+//    @Override
+//    public void isYearValid(String year) throws FlooringMasteryYearIsNotValidException {
+//        
+//        checkIfYearIsValid(year);
+//    }
 }

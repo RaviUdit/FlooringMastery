@@ -61,15 +61,15 @@ public interface FlooringMasteryServiceLayer {
     void isAreaValid(String area) throws FlooringMasteryAreaIsNotValidException;
     
     void isNameValid(String name) throws FlooringMasteryNameIsNotValidException;
-    
-    void isMonthValid(String name) throws FlooringMasteryMonthIsNotValidException;
-    
-    void isDateValid(String day, String month, String year) throws FlooringMasteryDayIsNotValidException;
-    
-    void isYearValid(String year) throws FlooringMasteryYearIsNotValidException;
-    
+  
     void isAppointmentInTheFuture(LocalDate orderDate) throws FlooringMasteryDateIsNotInTheFutureException;
     
     void isOrderNumberValid(LocalDate orderDate, String orderNumber) throws FlooringMasteryOrderNumberIsNotValidException,
-                                                                                              FlooringMasteryFilePersistanceException;
+                                                                            FlooringMasteryFilePersistanceException;
+      
+//    void isMonthValid(String name) throws FlooringMasteryMonthIsNotValidException;
+//    
+//    void isDateValid(String day, String month, String year) throws FlooringMasteryDayIsNotValidException;
+//    
+//    void isYearValid(String year) throws FlooringMasteryYearIsNotValidException;  
 }
